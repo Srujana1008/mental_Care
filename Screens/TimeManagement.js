@@ -1,53 +1,38 @@
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 
-const Anxiety = ({ navigation }) => {
+const TimeManagement = ({ navigation }) => {
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Managing Anxiety</Text>
+      <Text style={styles.title}>Effective Time Management</Text>
       <Text style={styles.subtitle}>Select an option to explore:</Text>
-      
-      <TouchableOpacity 
-        style={styles.button} 
-        onPress={() => navigation.navigate('Take Test')}>
-        <Text style={styles.buttonText}>📝 Take Test</Text>
-      </TouchableOpacity>
 
       {/* Tips */}
       <TouchableOpacity 
         style={styles.button} 
-        onPress={() => navigation.navigate('AnxietyTips')}>
+        onPress={() => navigation.navigate('TimeManagementTips')}>
         <Text style={styles.buttonText}>📌 Tips</Text>
       </TouchableOpacity>
-
-      {/* Talk to a Counsellor */}
-      {/* <TouchableOpacity 
-        style={styles.button} 
-        onPress={() => navigation.navigate('Counsellor')}>
-        <Text style={styles.buttonText}>🧑‍⚕ Talk to a Counsellor</Text>
-      </TouchableOpacity> */}
 
       {/* Watch Related Videos */}
       <TouchableOpacity 
         style={styles.button} 
-        onPress={() => navigation.navigate('Videos')}>
+        onPress={() => navigation.navigate('TimeManagementVideos')}>
         <Text style={styles.buttonText}>🎥 Watch Related Videos</Text>
       </TouchableOpacity>
 
-      {/* Tests */}
-      {/* /*
+      {/* To-Do List */}
       <TouchableOpacity 
         style={styles.button} 
-        onPress={() => navigation.navigate('Tests')}>
-        <Text style={styles.buttonText}>📝 Take a Test</Text>
+        onPress={() => navigation.navigate('ToDoList')}>
+        <Text style={styles.buttonText}>✅ To-Do List</Text>
       </TouchableOpacity>
-      */ }
 
-      {/* Food Recommendations */}
+      {/* Pomodoro Technique */}
       <TouchableOpacity 
         style={styles.button} 
-        onPress={() => navigation.navigate('Food')}>
-        <Text style={styles.buttonText}>🥗 Food Recommendations</Text>
+        onPress={() => navigation.navigate('Pomodoro')}>
+        <Text style={styles.buttonText}>⏳ Pomodoro Technique</Text>
       </TouchableOpacity>
     </View>
   );
@@ -61,4 +46,4 @@ const styles = StyleSheet.create({
   buttonText: { color: '#fff', fontSize: 16, fontWeight: 'bold' }
 });
 
-export default Anxiety;
+export default TimeManagement;

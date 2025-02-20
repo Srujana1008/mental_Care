@@ -7,7 +7,9 @@ import { Ionicons } from '@expo/vector-icons'; // Icons
 import { View, TouchableOpacity, StyleSheet, Text } from 'react-native';
 import * as Linking from 'expo-linking';
 import * as SMS from 'expo-sms';
+import * as Notifications from 'expo-notifications';
 
+Notifications.requestPermissionsAsync();
 // Import Screens
 import Anxiety from './Screens/Anxiety';
 import HomeScreen from './Screens/HomeScreen';
@@ -15,6 +17,19 @@ import ReliefExercises from './Screens/ReliefExercises';
 import Journal from './Screens/Journal';
 import  BreathingExercise  from './Screens/BreathingExerciseScreen';
 import MeditationTimer from './Screens/MeditationTimer';
+import Depression from './Screens/Depression';
+import FoodScreen from './Screens/FoodScreen';
+import AnxietyTips from './Screens/AnxietyTips';
+import DepressionFood from './Screens/DepressionFood';
+import DepressionTips from './Screens/DepressionTips';
+import TimeManagement from './Screens/TimeManagement';
+import TimeManagementTips from './Screens/TimeManagementTips';
+import ToDoList from './Screens/ToDoList';
+
+
+
+
+
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -55,6 +70,7 @@ function BottomTabs() {
       <Tab.Screen name="Relief" component={ReliefExercises} />
       <Tab.Screen name="Journal" component={Journal} />
       
+      
     </Tab.Navigator>
   );
 }
@@ -71,8 +87,18 @@ export default function App() {
             options={{ headerShown: false }} 
           />
           <Stack.Screen name="Anxiety" component={Anxiety} />
+          <Stack.Screen name="AnxietyTips" component={AnxietyTips} />
+          <Stack.Screen name="Food" component={FoodScreen} />
           <Stack.Screen name="BreathingExercise" component={BreathingExercise} />
           <Stack.Screen name="MeditationTimer" component={MeditationTimer} />
+          <Stack.Screen name="Depression" component={Depression} />
+          <Stack.Screen name="DepressionFood" component={DepressionFood} />
+          <Stack.Screen name="DepressionTips" component={DepressionTips} />
+          <Stack.Screen name="TimeManagement" component={TimeManagement} />
+          <Stack.Screen name="TimeManagementTips" component={TimeManagementTips}/>
+          <Stack.Screen name="ToDoList" component={ToDoList}/>
+
+
         </Stack.Navigator>
 
         {/* Floating SOS Button */}
