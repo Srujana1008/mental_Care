@@ -3,7 +3,7 @@ import {
   View, Text, TextInput, Button, Alert, StyleSheet, 
   TouchableWithoutFeedback, Keyboard, KeyboardAvoidingView, Platform, ScrollView, FlatList, TouchableOpacity
 } from "react-native";
-import { collection, addDoc, getDocs, Timestamp, query, orderBy } from "firebase/firestore";
+import { collection, addDoc, getDocs, deleteDoc, doc, Timestamp, query, orderBy } from "firebase/firestore";
 import { db } from "../firebaseConfig";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import uuid from "react-native-uuid";
@@ -12,7 +12,7 @@ const Journal = () => {
   const [entry, setEntry] = useState("");
   const [userId, setUserId] = useState(null);
   const [journals, setJournals] = useState([]);
-  const [showHistory, setShowHistory] = useState(false); // State to toggle history visibility
+  const [showHistory, setShowHistory] = useState(false);
 
   // Generate or get stored unique user ID
   const getOrCreateUserId = async () => {
@@ -32,7 +32,7 @@ const Journal = () => {
     getOrCreateUserId();
   }, []);
 
-  // Function to save journal entry
+  // Save journal entry to Firestore
   const saveJournalEntry = async () => {
     if (!entry.trim()) {
       Alert.alert("Error", "Journal entry cannot be empty.");
@@ -52,16 +52,16 @@ const Journal = () => {
       });
 
       Alert.alert("Success", "Journal entry saved!");
-      setEntry(""); // Clear input after saving
-      Keyboard.dismiss(); // Hide keyboard
-      fetchJournalEntries(); // Refresh journal list after saving
+      setEntry(""); // Clear input
+      Keyboard.dismiss();
+      fetchJournalEntries(); // Refresh journal list
     } catch (error) {
       console.error("Error saving journal entry:", error);
       Alert.alert("Error", "Failed to save entry. Try again.");
     }
   };
 
-  // Fetch previous journal entries from Firestore
+  // Fetch journal entries from Firestore
   const fetchJournalEntries = async () => {
     if (!userId) return;
 
@@ -82,7 +82,19 @@ const Journal = () => {
     }
   };
 
-  // Function to toggle history visibility
+  // Delete a journal entry
+  const deleteJournalEntry = async (entryId) => {
+    try {
+      await deleteDoc(doc(db, "journals", entryId));
+      Alert.alert("Deleted", "Journal entry removed successfully.");
+      fetchJournalEntries(); // Refresh list after deletion
+    } catch (error) {
+      console.error("Error deleting journal entry:", error);
+      Alert.alert("Error", "Failed to delete entry. Try again.");
+    }
+  };
+
+  // Toggle history visibility
   const toggleHistory = () => {
     if (!showHistory) {
       fetchJournalEntries(); // Load history only when clicked
@@ -126,6 +138,14 @@ const Journal = () => {
                 <View style={styles.journalItem}>
                   <Text style={styles.timestamp}>{item.timestamp}</Text>
                   <Text style={styles.entryText}>{item.entry}</Text>
+                  
+                  {/* Delete Button */}
+                  <TouchableOpacity 
+                    style={styles.deleteButton} 
+                    onPress={() => deleteJournalEntry(item.id)}
+                  >
+                    <Text style={styles.deleteButtonText}>Delete</Text>
+                  </TouchableOpacity>
                 </View>
               )}
             />
@@ -154,10 +174,18 @@ const styles = StyleSheet.create({
   },
   historyButtonText: { color: "#fff", fontSize: 16, fontWeight: "bold" },
   journalItem: { 
-    backgroundColor: "#f2f2f2", padding: 10, marginVertical: 5, borderRadius: 5, width: "100%"
+    backgroundColor: "#f2f2f2", padding: 10, marginVertical: 5, borderRadius: 5, width: "100%",
+    flexDirection: "row", justifyContent: "space-between", alignItems: "center"
   },
-  timestamp: { fontSize: 12, color: "gray", marginBottom: 5 },
-  entryText: { fontSize: 16 }
+  timestamp: { fontSize: 12, color: "gray", marginBottom: 5, flex: 1 },
+  entryText: { fontSize: 16, flex: 2 },
+  deleteButton: {
+    backgroundColor: "#FF3B30",
+    paddingVertical: 5,
+    paddingHorizontal: 10,
+    borderRadius: 5,
+  },
+  deleteButtonText: { color: "#fff", fontWeight: "bold" }
 });
 
 export default Journal;

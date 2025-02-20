@@ -2,6 +2,7 @@ import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
 import { NavigationContainer } from '@react-navigation/native';
+//import  BreathingExerciseScreen  from './Screens/BreathingExercise';
 import { Ionicons } from '@expo/vector-icons'; // Icons
 import { View, TouchableOpacity, StyleSheet, Text } from 'react-native';
 import * as Linking from 'expo-linking';
@@ -12,6 +13,8 @@ import Anxiety from './Screens/Anxiety';
 import HomeScreen from './Screens/HomeScreen';
 import ReliefExercises from './Screens/ReliefExercises';
 import Journal from './Screens/Journal';
+import  BreathingExercise  from './Screens/BreathingExerciseScreen';
+import MeditationTimer from './Screens/MeditationTimer';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -51,6 +54,7 @@ function BottomTabs() {
       <Tab.Screen name="Home" component={HomeScreen} />
       <Tab.Screen name="Relief" component={ReliefExercises} />
       <Tab.Screen name="Journal" component={Journal} />
+      
     </Tab.Navigator>
   );
 }
@@ -67,6 +71,8 @@ export default function App() {
             options={{ headerShown: false }} 
           />
           <Stack.Screen name="Anxiety" component={Anxiety} />
+          <Stack.Screen name="BreathingExercise" component={BreathingExercise} />
+          <Stack.Screen name="MeditationTimer" component={MeditationTimer} />
         </Stack.Navigator>
 
         {/* Floating SOS Button */}
