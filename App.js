@@ -25,6 +25,8 @@ import DepressionTips from './Screens/DepressionTips';
 import TimeManagement from './Screens/TimeManagement';
 import TimeManagementTips from './Screens/TimeManagementTips';
 import ToDoList from './Screens/ToDoList';
+import Pomodoro from './Screens/Pomodoro';
+
 
 
 
@@ -97,6 +99,8 @@ export default function App() {
           <Stack.Screen name="TimeManagement" component={TimeManagement} />
           <Stack.Screen name="TimeManagementTips" component={TimeManagementTips}/>
           <Stack.Screen name="ToDoList" component={ToDoList}/>
+          <Stack.Screen name="Pomodoro" component={Pomodoro} />
+
 
 
         </Stack.Navigator>

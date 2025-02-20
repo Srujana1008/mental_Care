@@ -2,10 +2,20 @@ import React, { useState, useEffect } from 'react';
 import { 
   View, Text, TextInput, TouchableOpacity, FlatList, StyleSheet, Alert, Platform 
 } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import DateTimePicker from '@react-native-community/datetimepicker';
 
 const ToDoList = () => {
+  const navigation = useNavigation();
+  
+  // Hide header
+  React.useLayoutEffect(() => {
+    navigation.setOptions({
+      headerShown: false,
+    });
+  }, [navigation]);
+  
   const [tasks, setTasks] = useState([]);
   const [finishedTasks, setFinishedTasks] = useState([]);
   const [task, setTask] = useState('');
@@ -63,6 +73,52 @@ const ToDoList = () => {
     setTasks(updatedTasks);
     setFinishedTasks(updatedFinishedTasks);
     saveTasks(updatedTasks, updatedFinishedTasks);
+  };
+
+  // Add delete task function for active tasks
+  const deleteTask = (taskId) => {
+    Alert.alert(
+      "Delete Task",
+      "Are you sure you want to delete this task?",
+      [
+        {
+          text: "Cancel",
+          style: "cancel"
+        },
+        {
+          text: "Delete",
+          onPress: () => {
+            const updatedTasks = tasks.filter(task => task.id !== taskId);
+            setTasks(updatedTasks);
+            saveTasks(updatedTasks, finishedTasks);
+          },
+          style: "destructive"
+        }
+      ]
+    );
+  };
+
+  // Add delete function for finished tasks
+  const deleteFinishedTask = (taskId) => {
+    Alert.alert(
+      "Delete Completed Task",
+      "Are you sure you want to delete this completed task?",
+      [
+        {
+          text: "Cancel",
+          style: "cancel"
+        },
+        {
+          text: "Delete",
+          onPress: () => {
+            const updatedFinishedTasks = finishedTasks.filter(task => task.id !== taskId);
+            setFinishedTasks(updatedFinishedTasks);
+            saveTasks(tasks, updatedFinishedTasks);
+          },
+          style: "destructive"
+        }
+      ]
+    );
   };
 
   const onDateChange = (event, selectedDate) => {
@@ -130,15 +186,24 @@ const ToDoList = () => {
         data={tasks}
         keyExtractor={(item) => item.id}
         renderItem={({ item }) => (
-          <TouchableOpacity 
-            style={styles.taskItem} 
-            onPress={() => finishTask(item.id)}
-          >
-            <Text style={styles.taskText}>
-              {item.date} - {item.title}
-            </Text>
-            <Text style={styles.checkbox}>✔️</Text>
-          </TouchableOpacity>
+          <View style={styles.taskItem}>
+            <TouchableOpacity 
+              style={styles.taskTextContainer}
+              onPress={() => finishTask(item.id)}
+            >
+              <Text style={styles.taskText}>
+                {item.date} - {item.title}
+              </Text>
+            </TouchableOpacity>
+            <View style={styles.taskButtonsContainer}>
+              <TouchableOpacity onPress={() => finishTask(item.id)}>
+                <Text style={styles.checkbox}>✔️</Text>
+              </TouchableOpacity>
+              <TouchableOpacity onPress={() => deleteTask(item.id)}>
+                <Text style={styles.deleteButton}>🗑️</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
         )}
       />
 
@@ -152,7 +217,12 @@ const ToDoList = () => {
             <Text style={styles.taskText}>
               {item.date} - {item.title}
             </Text>
-            <Text style={styles.finishedCheck}>✅</Text>
+            <View style={styles.taskButtonsContainer}>
+              <Text style={styles.finishedCheck}>✅</Text>
+              <TouchableOpacity onPress={() => deleteFinishedTask(item.id)}>
+                <Text style={styles.deleteButton}>🗑️</Text>
+              </TouchableOpacity>
+            </View>
           </View>
         )}
       />
@@ -161,34 +231,112 @@ const ToDoList = () => {
 };
 
 const styles = StyleSheet.create({
-  container: { flex: 1, padding: 20, backgroundColor: '#f9f9f9' },
-  title: { fontSize: 24, fontWeight: 'bold', textAlign: 'center', marginBottom: 10 },
+  container: { 
+    flex: 1, 
+    padding: 20, 
+    backgroundColor: '#f9f9f9',
+    paddingTop: 50 // Increased to account for status bar and removed header
+  },
+  
+  title: { 
+    fontSize: 18, 
+    //fontWeight: 'bold', 
+    textAlign: 'center', 
+    marginBottom: 20 
+  },
   input: { 
-    borderWidth: 1, padding: 10, borderRadius: 8, marginBottom: 10, backgroundColor: '#fff' 
+    borderWidth: 1, 
+    padding: 10, 
+    borderRadius: 8, 
+    marginBottom: 10, 
+    backgroundColor: '#fff' 
   },
   dateButton: { 
-    backgroundColor: '#FFA500', padding: 12, borderRadius: 8, alignItems: 'center', marginBottom: 10 
+    backgroundColor: '#FFA500', 
+    padding: 12, 
+    borderRadius: 8, 
+    alignItems: 'center', 
+    marginBottom: 10 
   },
-  selectedDate: { textAlign: 'center', fontSize: 16, marginBottom: 10 },
+  selectedDate: { 
+    textAlign: 'center', 
+    fontSize: 16, 
+    marginBottom: 10 
+  },
   addButton: { 
-    backgroundColor: '#007AFF', padding: 12, borderRadius: 8, alignItems: 'center', marginBottom: 10 
+    backgroundColor: '#007AFF', 
+    padding: 12, 
+    borderRadius: 8, 
+    alignItems: 'center', 
+    marginBottom: 10 
   },
-  buttonText: { color: '#fff', fontSize: 16, fontWeight: 'bold' },
-  sectionTitle: { fontSize: 20, fontWeight: 'bold', marginTop: 20, marginBottom: 10 },
+  buttonText: { 
+    color: '#fff', 
+    fontSize: 16, 
+    fontWeight: 'bold' 
+  },
+  sectionTitle: { 
+    fontSize: 20, 
+    fontWeight: 'bold', 
+    marginTop: 20, 
+    marginBottom: 10 
+  },
   taskItem: { 
-    flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between',
-    padding: 15, backgroundColor: '#fff', borderRadius: 8, marginVertical: 5, elevation: 2 
+    flexDirection: 'row', 
+    alignItems: 'center', 
+    justifyContent: 'space-between',
+    padding: 15, 
+    backgroundColor: '#fff', 
+    borderRadius: 8, 
+    marginVertical: 5, 
+    elevation: 2 
   },
   finishedTaskItem: { 
-    flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between',
-    padding: 15, backgroundColor: '#D4EDDA', borderRadius: 8, marginVertical: 5, elevation: 2 
+    flexDirection: 'row', 
+    alignItems: 'center', 
+    justifyContent: 'space-between',
+    padding: 15, 
+    backgroundColor: '#D4EDDA', 
+    borderRadius: 8, 
+    marginVertical: 5, 
+    elevation: 2 
   },
-  taskText: { fontSize: 16, flex: 1 },
-  checkbox: { fontSize: 20, marginLeft: 10, color: '#007AFF' },
-  finishedCheck: { fontSize: 20, marginLeft: 10, color: '#28A745' },
-  iosDateContainer: { alignItems: 'center', marginBottom: 10 },
+  taskTextContainer: {
+    flex: 1,
+  },
+  taskText: { 
+    fontSize: 16, 
+    flex: 1 
+  },
+  taskButtonsContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  checkbox: { 
+    fontSize: 20, 
+    marginLeft: 10, 
+    color: '#007AFF' 
+  },
+  finishedCheck: { 
+    fontSize: 20, 
+    marginLeft: 10, 
+    color: '#28A745' 
+  },
+  deleteButton: {
+    fontSize: 20,
+    marginLeft: 10,
+    color: '#DC3545'
+  },
+  iosDateContainer: { 
+    alignItems: 'center', 
+    marginBottom: 10 
+  },
   doneButton: { 
-    backgroundColor: '#007AFF', padding: 10, borderRadius: 5, marginTop: 10, alignItems: 'center' 
+    backgroundColor: '#007AFF', 
+    padding: 10, 
+    borderRadius: 5, 
+    marginTop: 10, 
+    alignItems: 'center' 
   }
 });
 
