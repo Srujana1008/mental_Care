@@ -1,40 +1,98 @@
 import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, ImageBackground } from 'react-native';
+
+const topics = [
+  { name: "Anxiety", image: require('../assets/morning.jpg'), screen: "Anxiety" },
+  { name: "Depression", image: require('../assets/present.jpg'), screen: "Depression" },
+  { name: "Time Management", image: require('../assets/energizing.jpg'), screen: "TimeManagement" }
+];
 
 const HomeScreen = ({ navigation }) => {
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Mental Wellness Topics</Text>
+      {/* Heading */}
+      <Text style={styles.title}>
+        <Text style={styles.yourText}>Find</Text> <Text style={styles.practicesText}>Support for Your Journey</Text>
+      </Text>
 
-      {/* Anxiety */}
-      <TouchableOpacity 
-        style={styles.button} 
-        onPress={() => navigation.navigate('Anxiety')}>
-        <Text style={styles.buttonText}>Anxiety</Text>
-      </TouchableOpacity>
-
-      {/* Depression */}
-      <TouchableOpacity 
-        style={styles.button} 
-        onPress={() => navigation.navigate('Depression')}>
-        <Text style={styles.buttonText}>Depression</Text>
-      </TouchableOpacity>
-
-      {/* Time Management */}
-      <TouchableOpacity 
-        style={styles.button} 
-        onPress={() => navigation.navigate('TimeManagement')}>
-        <Text style={styles.buttonText}>Time Management</Text>
-      </TouchableOpacity>
+      {/* Category Buttons */}
+      {topics.map((topic, index) => (
+        <TouchableOpacity 
+          key={index} 
+          style={styles.card} 
+          onPress={() => navigation.navigate(topic.screen)}
+        >
+          <ImageBackground 
+            source={topic.image} 
+            style={styles.cardImage} 
+            imageStyle={{ borderRadius: 20 }}
+          >
+            <View style={styles.overlay}>
+              <Text style={styles.cardText}>{topic.name}</Text>
+            </View>
+          </ImageBackground>
+        </TouchableOpacity>
+      ))}
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  container: { flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: '#f5f5f5' },
-  title: { fontSize: 24, fontWeight: 'bold', marginBottom: 20 },
-  button: { backgroundColor: '#007AFF', padding: 15, margin: 10, borderRadius: 8, width: '80%', alignItems: 'center' },
-  buttonText: { color: '#fff', fontSize: 16, fontWeight: 'bold' }
+  container: { 
+    flex: 1, 
+    backgroundColor: '#E5ECF4', 
+    paddingHorizontal: 20, 
+    paddingTop: 50 
+  },
+  title: { 
+    fontSize: 26, 
+    fontWeight: 'bold', 
+    textAlign: 'center', 
+    marginBottom: 15 
+  },
+  yourText: { 
+    fontSize: 24, 
+    fontFamily: 'serif', 
+    fontStyle: 'italic', 
+    textAlign: 'center',
+    color: '#333' 
+  },
+  practicesText: { 
+    fontSize: 26, 
+    fontWeight: 'bold', 
+    color: '#222'
+  },
+  card: { 
+    height: 140, 
+    borderRadius: 20, 
+    marginBottom: 20, 
+    overflow: 'hidden',
+    elevation: 5, 
+    shadowColor: '#000', 
+    shadowOffset: { width: 0, height: 3 }, 
+    shadowOpacity: 0.2, 
+    shadowRadius: 5 
+  },
+  cardImage: { 
+    flex: 1, 
+    justifyContent: 'center', 
+    alignItems: 'center' 
+  },
+  overlay: {
+    width: '100%',
+    height: '100%',
+    backgroundColor: 'rgba(0, 0, 0, 0.3)', // Subtle dark overlay
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  cardText: { 
+    fontSize: 22, 
+    fontWeight: 'bold', 
+    color: '#2C3539', 
+    textTransform: 'uppercase', 
+    textAlign: 'center',
+    paddingHorizontal: 10
+  }
 });
 
 export default HomeScreen;

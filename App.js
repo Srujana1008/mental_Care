@@ -2,7 +2,6 @@ import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
 import { NavigationContainer } from '@react-navigation/native';
-//import  BreathingExerciseScreen  from './Screens/BreathingExercise';
 import { Ionicons } from '@expo/vector-icons'; // Icons
 import { View, TouchableOpacity, StyleSheet, Text } from 'react-native';
 import * as Linking from 'expo-linking';
@@ -26,7 +25,9 @@ import TimeManagement from './Screens/TimeManagement';
 import TimeManagementTips from './Screens/TimeManagementTips';
 import ToDoList from './Screens/ToDoList';
 import Pomodoro from './Screens/Pomodoro';
-
+import TimeManagementVideos from './Screens/TimeManagementVideos';
+import AnxietyManagementVideos from './Screens/AnxietyManagementVideos';
+import DepressionVideos from './Screens/DepressionVideos';
 
 
 
@@ -100,6 +101,9 @@ export default function App() {
           <Stack.Screen name="TimeManagementTips" component={TimeManagementTips}/>
           <Stack.Screen name="ToDoList" component={ToDoList}/>
           <Stack.Screen name="Pomodoro" component={Pomodoro} />
+          <Stack.Screen name="TimeManagementVideos" component={TimeManagementVideos}/>
+          <Stack.Screen name="AnxietyManagementVideos" component={AnxietyManagementVideos}/>
+          <Stack.Screen name="DepressionVideos" component={DepressionVideos}/>
 
 
 

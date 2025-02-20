@@ -22,7 +22,7 @@ const Depression = ({ navigation }) => {
       {/* Watch Related Videos */}
       <TouchableOpacity 
         style={styles.button} 
-        onPress={() => navigation.navigate('Videos')}>
+        onPress={() => navigation.navigate('DepressionVideos')}>
         <Text style={styles.buttonText}>🎥 Watch Related Videos</Text>
       </TouchableOpacity>
 
