@@ -130,14 +130,14 @@ const ToDoList = () => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>✅ To-Do List</Text>
+      <Text style={styles.title}> To-Do List</Text>
 
       {/* Date Picker */}
       <TouchableOpacity 
         style={styles.dateButton} 
         onPress={() => setShowDatePicker(true)}
       >
-        <Text style={styles.buttonText}>📅 Select Date</Text>
+        <Text style={styles.buttonText}>Select Date</Text>
       </TouchableOpacity>
 
       {showDatePicker && (
@@ -181,7 +181,7 @@ const ToDoList = () => {
       </TouchableOpacity>
 
       {/* Active Task List */}
-      <Text style={styles.sectionTitle}>📌 Tasks</Text>
+      <Text style={styles.sectionTitle}> Tasks</Text>
       <FlatList 
         data={tasks}
         keyExtractor={(item) => item.id}
@@ -208,7 +208,7 @@ const ToDoList = () => {
       />
 
       {/* Finished Task List */}
-      <Text style={styles.sectionTitle}>🎉 Finished Tasks</Text>
+      <Text style={styles.sectionTitle}> Finished Tasks</Text>
       <FlatList 
         data={finishedTasks}
         keyExtractor={(item) => item.id}
@@ -234,15 +234,16 @@ const styles = StyleSheet.create({
   container: { 
     flex: 1, 
     padding: 20, 
-    backgroundColor: '#f9f9f9',
+    backgroundColor: '#546C75',
     paddingTop: 50 // Increased to account for status bar and removed header
   },
   
   title: { 
-    fontSize: 18, 
+    fontSize: 25, 
     //fontWeight: 'bold', 
     textAlign: 'center', 
-    marginBottom: 20 
+    marginBottom: 20 ,
+    color:'white'
   },
   input: { 
     borderWidth: 1, 
@@ -252,7 +253,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff' 
   },
   dateButton: { 
-    backgroundColor: '#FFA500', 
+    backgroundColor: '#A7D8DE', 
     padding: 12, 
     borderRadius: 8, 
     alignItems: 'center', 
@@ -261,25 +262,29 @@ const styles = StyleSheet.create({
   selectedDate: { 
     textAlign: 'center', 
     fontSize: 16, 
-    marginBottom: 10 
+    marginBottom: 10 ,
+    
   },
   addButton: { 
-    backgroundColor: '#007AFF', 
+    backgroundColor: '#A7D8DE', 
     padding: 12, 
     borderRadius: 8, 
     alignItems: 'center', 
-    marginBottom: 10 
+    marginBottom: 10,
+
   },
   buttonText: { 
     color: '#fff', 
     fontSize: 16, 
-    fontWeight: 'bold' 
+    fontWeight: 'bold',
+    color:'black' 
   },
   sectionTitle: { 
     fontSize: 20, 
     fontWeight: 'bold', 
     marginTop: 20, 
-    marginBottom: 10 
+    marginBottom: 10,
+    color:'white' 
   },
   taskItem: { 
     flexDirection: 'row', 

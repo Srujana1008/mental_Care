@@ -64,12 +64,7 @@ const DepressionVideos = ({ navigation }) => {
           </View>
         ))}
 
-        <TouchableOpacity 
-          style={styles.backButton} 
-          onPress={() => navigation.goBack()}
-        >
-          <Text style={styles.backButtonText}>← Back to Depression Management</Text>
-        </TouchableOpacity>
+        
       </ScrollView>
     </View>
   );
@@ -78,7 +73,7 @@ const DepressionVideos = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f5f5f5',
+    backgroundColor: '#546C75',
     padding: 20,
     paddingTop: 50
   },
@@ -86,19 +81,21 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontWeight: 'bold',
     marginBottom: 10,
-    textAlign: 'center'
+    textAlign: 'center',
+    color:'white'
   },
   subtitle: {
     fontSize: 16,
     marginBottom: 20,
     color: 'gray',
-    textAlign: 'center'
+    textAlign: 'center',
+    color:'white'
   },
   scrollContainer: {
     flex: 1,
   },
   videoCard: {
-    backgroundColor: '#fff',
+    backgroundColor: '#A7D8DE',
     borderRadius: 10,
     padding: 15,
     marginBottom: 20,

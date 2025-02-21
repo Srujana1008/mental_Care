@@ -72,12 +72,7 @@ const TimeManagementVideos = ({ navigation }) => {
           </View>
         ))}
 
-        <TouchableOpacity 
-          style={styles.backButton} 
-          onPress={() => navigation.goBack()}
-        >
-          <Text style={styles.backButtonText}>← Back to Time Management</Text>
-        </TouchableOpacity>
+       
       </ScrollView>
     </View>
   );
@@ -86,7 +81,7 @@ const TimeManagementVideos = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f5f5f5',
+    backgroundColor: '#546C75',
     padding: 20,
     paddingTop: 50
   },
@@ -94,19 +89,21 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontWeight: 'bold',
     marginBottom: 10,
-    textAlign: 'center'
+    textAlign: 'center',
+    color:'white'
   },
   subtitle: {
     fontSize: 16,
     marginBottom: 20,
     color: 'gray',
-    textAlign: 'center'
+    textAlign: 'center',
+    color:'white'
   },
   scrollContainer: {
     flex: 1,
   },
   videoCard: {
-    backgroundColor: '#fff',
+    backgroundColor: '#A7D8DE',
     borderRadius: 10,
     padding: 15,
     marginBottom: 20,
@@ -153,11 +150,6 @@ const styles = StyleSheet.create({
   playIcon: {
     fontSize: 30,
   },
-  videoDescription: {
-    fontSize: 14,
-    color: '#555',
-    lineHeight: 20
-  },
   backButton: {
     backgroundColor: '#007AFF',
     padding: 15,
@@ -171,5 +163,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold'
   }
 });
+
+
 
 export default TimeManagementVideos;

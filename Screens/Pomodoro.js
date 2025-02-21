@@ -82,7 +82,7 @@ const Pomodoro = () => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>{isBreak ? 'Break Time! ☕' : 'Focus Mode! ⏳'}</Text>
+      <Text style={styles.title}>{isBreak ? 'Break Time! ' : 'Focus Mode! '}</Text>
       <Text style={styles.timer}>{formatTime(time)}</Text>
       <View style={styles.buttonContainer}>
         <TouchableOpacity style={styles.button} onPress={() => setIsRunning(!isRunning)}>
@@ -101,12 +101,12 @@ const Pomodoro = () => {
 };
 
 const styles = StyleSheet.create({
-  container: { flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: '#FAFAFA' },
-  title: { fontSize: 24, fontWeight: 'bold', marginBottom: 20 },
-  timer: { fontSize: 48, fontWeight: 'bold', color: '#333', marginBottom: 20 },
+  container: { flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: '#546C75' },
+  title: { fontSize: 24, fontWeight: 'bold', marginBottom: 20,color:'white' },
+  timer: { fontSize: 48, fontWeight: 'bold', color: 'white', marginBottom: 20 },
   buttonContainer: { flexDirection: 'row', marginTop: 20 },
-  button: { backgroundColor: '#007AFF', padding: 15, margin: 10, borderRadius: 8 },
-  buttonText: { color: '#fff', fontSize: 18, fontWeight: 'bold' }
+  button: { backgroundColor: '#A7D8DE', padding: 15, margin: 10, borderRadius: 8 },
+  buttonText: { color: 'black', fontSize: 18, fontWeight: 'bold' }
 });
 
 export default Pomodoro;

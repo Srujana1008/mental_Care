@@ -2,21 +2,21 @@ import React from 'react';
 import { View, Text, StyleSheet, FlatList, TouchableOpacity } from 'react-native';
 
 const foodRecommendations = [
-  { category: "Magnesium-Rich Foods", emoji: "🌿", items: "Dark Chocolate 🍫, Spinach, Almonds, Bananas 🍌" },
-  { category: "Omega-3 Fatty Acids", emoji: "🐟", items: "Salmon, Chia Seeds, Walnuts" },
-  { category: "Complex Carbohydrates", emoji: "🍠", items: "Oats, Quinoa, Brown Rice, Sweet Potatoes" },
-  { category: "Probiotic & Fermented Foods", emoji: "🦠", items: "Yogurt, Kefir, Kimchi, Sauerkraut, Miso" },
-  { category: "Tryptophan-Rich Foods", emoji: "🥚", items: "Turkey, Chicken, Eggs, Cheese" },
-  { category: "Vitamin B-Complex Foods", emoji: "🥑", items: "Avocados, Legumes, Whole Grains" },
-  { category: "Herbal Teas", emoji: "🍵", items: "Chamomile Tea, Green Tea, Peppermint Tea" },
-  { category: "Hydrating Foods", emoji: "💧", items: "Cucumbers, Watermelon 🍉, Oranges 🍊" },
-  { category: "Foods to Avoid", emoji: "🚫", items: "Caffeine ☕, Processed Sugary Foods 🍩, Alcohol 🍷, Fried & Junk Foods 🍟" },
+  { category: "Magnesium-Rich Foods", items: "Dark Chocolate , Spinach, Almonds, Bananas " },
+  { category: "Omega-3 Fatty Acids",items: "Salmon, Chia Seeds, Walnuts" },
+  { category: "Complex Carbohydrates", items: "Oats, Quinoa, Brown Rice, Sweet Potatoes" },
+  { category: "Probiotic & Fermented Foods",  items: "Yogurt, Kefir, Kimchi, Sauerkraut, Miso" },
+  { category: "Tryptophan-Rich Foods", items: "Turkey, Chicken, Eggs, Cheese" },
+  { category: "Vitamin B-Complex Foods", items: "Avocados, Legumes, Whole Grains" },
+  { category: "Herbal Teas", items: "Chamomile Tea, Green Tea, Peppermint Tea" },
+  { category: "Hydrating Foods",  items: "Cucumbers, Watermelon , Oranges " },
+  { category: "Foods to Avoid",  items: "Caffeine , Processed Sugary Foods , Alcohol , Fried & Junk Foods " },
 ];
 
 const FoodScreen = ({ navigation }) => {
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>🥗 Best Foods for Anxiety</Text>
+      <Text style={styles.title}> Best Foods for Anxiety</Text>
       <FlatList
         data={foodRecommendations}
         keyExtractor={(item) => item.category}
@@ -29,21 +29,17 @@ const FoodScreen = ({ navigation }) => {
       />
 
       
-      <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
-        <Text style={styles.backButtonText}>⬅️ Back</Text>
-      </TouchableOpacity>
+     
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#EAF6F6', padding: 20 },
-  title: { fontSize: 24, fontWeight: 'bold', textAlign: 'center', marginBottom: 15, color: '#004D40' },
-  card: { backgroundColor: '#FFFFFF', padding: 15, borderRadius: 10, marginBottom: 10, shadowColor: "#000", shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.1, shadowRadius: 5, elevation: 3 },
-  cardTitle: { fontSize: 18, fontWeight: 'bold', color: '#00796B' },
+  container: { flex: 1, backgroundColor: '#546C75', padding: 20 },
+  title: { fontSize: 19, fontWeight: 'bold', textAlign: 'center', marginBottom: 10, color: '#fff' },
+  card: { backgroundColor: '#A7D8DE', padding: 15, borderRadius: 10, marginBottom: 10, shadowColor: "#000", shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.1, shadowRadius: 5, elevation: 3 },
+  cardTitle: { fontSize: 18, fontWeight: 'bold', color: 'black' },
   cardText: { fontSize: 16, color: '#333', marginTop: 5 },
-  avoidTitle: { fontSize: 20, fontWeight: 'bold', color: '#D32F2F', marginTop: 20, textAlign: 'center' },
-  avoidText: { fontSize: 16, textAlign: 'center', color: '#444', marginTop: 5 },
   backButton: { marginTop: 20, alignSelf: 'center', backgroundColor: '#007AFF', padding: 10, borderRadius: 8, width: '50%', alignItems: 'center' },
   backButtonText: { color: '#fff', fontSize: 16, fontWeight: 'bold' }
 });

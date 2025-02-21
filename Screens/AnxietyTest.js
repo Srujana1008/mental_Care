@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Text, TouchableOpacity, ScrollView } from 'react-native';
 
 const questions = [
   "I worry about things",
@@ -30,6 +30,8 @@ const AnxietyTest = () => {
   const [responses, setResponses] = useState(Array(questions.length).fill(null));
   const [currentIndex, setCurrentIndex] = useState(0);
   const [result, setResult] = useState(null);
+  const [previousScores, setPreviousScores] = useState([]);
+  const [showPreviousScores, setShowPreviousScores] = useState(false);
 
   const handleSelect = (value) => {
     const newResponses = [...responses];
@@ -42,68 +44,128 @@ const AnxietyTest = () => {
     let level = "Mild Anxiety";
     if (score > 40) level = "Severe Anxiety";
     else if (score > 25) level = "Moderate Anxiety";
+
+    setPreviousScores([...previousScores, { score, level }]);
     setResult({ level, score });
   };
 
   return (
-    <View style={styles.container}>
+    <View style={{ flex: 1, padding: 20, justifyContent: 'center', alignItems: 'center', backgroundColor: '#546C75' }}>
       {!result ? (
         <>
-          <Text style={styles.title}>Do You Feel Anxious?</Text>
-          <Text style={styles.question}>{questions[currentIndex]}</Text>
-          <View style={styles.optionsContainer}>
+          <Text style={{ fontSize: 24, fontWeight: 'bold', marginBottom: 20, color: '#F5F5F5' }}>
+            Do You Feel Anxious?
+          </Text>
+          <Text style={{ fontSize: 18, fontWeight: 'bold', textAlign: 'center', marginBottom: 20, color: '#F5F5F5' }}>
+            {questions[currentIndex]}
+          </Text>
+          <View style={{ flexDirection: 'column', alignItems: 'center', marginBottom: 20 }}>
             {options.map((option) => (
-              <TouchableOpacity 
-                key={option} 
-                style={[styles.optionButton, responses[currentIndex] === option && styles.selectedOption]} 
-                onPress={() => handleSelect(option)}>
-                <Text style={styles.optionText}>{option}</Text>
+              <TouchableOpacity
+                key={option}
+                style={{
+                  padding: 10,
+                  marginVertical: 5,
+                  width: 200,
+                  backgroundColor: responses[currentIndex] === option ? '#546C75' : '#A7D8DE',
+                  borderRadius: 5,
+                  alignItems: 'center',
+                }}
+                onPress={() => handleSelect(option)}
+              >
+                <Text style={{ color: '#000', fontSize: 16 }}>{option}</Text>
               </TouchableOpacity>
             ))}
           </View>
-          <View style={styles.navButtons}>
+          <View style={{ flexDirection: 'row', justifyContent: 'space-between', width: '100%' }}>
             {currentIndex > 0 && (
-              <TouchableOpacity style={styles.navButton} onPress={() => setCurrentIndex(currentIndex - 1)}>
-                <Text style={styles.navButtonText}>← Previous</Text>
+              <TouchableOpacity
+                style={{
+                  backgroundColor: '#A7D8DE',
+                  padding: 10,
+                  borderRadius: 8,
+                  width: 100,
+                  alignItems: 'center',
+                }}
+                onPress={() => setCurrentIndex(currentIndex - 1)}
+              >
+                <Text style={{ color: '#000', fontSize: 16 }}>← Previous</Text>
               </TouchableOpacity>
             )}
             {currentIndex < questions.length - 1 ? (
-              <TouchableOpacity style={styles.navButton} onPress={() => setCurrentIndex(currentIndex + 1)}>
-                <Text style={styles.navButtonText}>Next →</Text>
+              <TouchableOpacity
+                style={{
+                  backgroundColor: responses[currentIndex] !== null ? '#A7D8DE' : '#cccccc',
+                  opacity: responses[currentIndex] !== null ? 1 : 0.7,
+                  padding: 10,
+                  borderRadius: 8,
+                  width: 100,
+                  alignItems: 'center',
+                }}
+                onPress={() => {
+                  if (responses[currentIndex] !== null) {
+                    setCurrentIndex(currentIndex + 1);
+                  }
+                }}
+              >
+                <Text style={{ color: '#000', fontSize: 16 }}>Next →</Text>
               </TouchableOpacity>
             ) : (
-              <TouchableOpacity style={styles.submitButton} onPress={calculateResult}>
-                <Text style={styles.submitText}>Submit</Text>
+              <TouchableOpacity
+                style={{
+                  backgroundColor: '#A7D8DE',
+                  padding: 15,
+                  borderRadius: 8,
+                  marginTop: 20,
+                  width: 150,
+                  alignItems: 'center',
+                }}
+                onPress={calculateResult}
+              >
+                <Text style={{ color: '#fff', fontSize: 16, fontWeight: 'bold' }}>Submit</Text>
               </TouchableOpacity>
             )}
           </View>
         </>
       ) : (
-        <View style={styles.resultContainer}>
-          <Text style={styles.resultText}>Your Anxiety Level:</Text>
-          <Text style={styles.resultScore}>{result.level}</Text>
+        <View style={{ marginTop: 20, alignItems: 'center' }}>
+          <Text style={{ fontSize: 18, fontWeight: 'bold', color: '#F5F5F5' }}>Your Anxiety Level:</Text>
+          <Text style={{ fontSize: 22, fontWeight: 'bold', color: '#A7D8DE' }}>{result.level}</Text>
+          <Text style={{ fontSize: 16, color: '#F5F5F5', marginTop: 5 }}>Score: {result.score}</Text>
+
+          <TouchableOpacity
+            style={{
+              backgroundColor: '#A7D8DE',
+              padding: 10,
+              borderRadius: 8,
+              marginTop: 20,
+              width: 180,
+              alignItems: 'center',
+            }}
+            onPress={() => setShowPreviousScores(!showPreviousScores)}
+          >
+            <Text style={{ color: '#000', fontSize: 16 }}>
+              {showPreviousScores ? "Hide Previous Scores" : "View Previous Scores"}
+            </Text>
+          </TouchableOpacity>
+
+          {showPreviousScores && (
+            <ScrollView style={{ marginTop: 20, maxHeight: 150, width: '80%', backgroundColor: '#F5F5F5', padding: 10, borderRadius: 10 }}>
+              {previousScores.length === 0 ? (
+                <Text style={{ textAlign: 'center', color: '#000' }}>No previous scores available.</Text>
+              ) : (
+                previousScores.map((entry, index) => (
+                  <Text key={index} style={{ color: '#000', fontSize: 16, marginBottom: 5 }}>
+                    Attempt {index + 1}: {entry.level} (Score: {entry.score})
+                  </Text>
+                ))
+              )}
+            </ScrollView>
+          )}
         </View>
       )}
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  container: { flex: 1, padding: 20, justifyContent: 'center', alignItems: 'center', backgroundColor: '#f5f5f5' },
-  title: { fontSize: 24, fontWeight: 'bold', marginBottom: 20 },
-  question: { fontSize: 18, fontWeight: 'bold', textAlign: 'center', marginBottom: 20 },
-  optionsContainer: { flexDirection: 'column', alignItems: 'center', marginBottom: 20 },
-  optionButton: { padding: 10, marginVertical: 5, width: 200, backgroundColor: '#ddd', borderRadius: 5, alignItems: 'center' },
-  selectedOption: { backgroundColor: '#007AFF' },
-  optionText: { color: '#000', fontSize: 16 },
-  navButtons: { flexDirection: 'row', justifyContent: 'space-between', width: '100%' },
-  navButton: { backgroundColor: '#007AFF', padding: 10, borderRadius: 8, width: 100, alignItems: 'center' },
-  navButtonText: { color: '#fff', fontSize: 16 },
-  submitButton: { backgroundColor: '#007AFF', padding: 15, borderRadius: 8, marginTop: 20, width: 150, alignItems: 'center' },
-  submitText: { color: '#fff', fontSize: 16, fontWeight: 'bold' },
-  resultContainer: { marginTop: 20, alignItems: 'center' },
-  resultText: { fontSize: 20, fontWeight: 'bold', color: '#333' },
-  resultScore: { fontSize: 24, fontWeight: 'bold', color: '#007AFF', marginTop: 10 }
-});
 
 export default AnxietyTest;

@@ -1,46 +1,28 @@
 import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, ImageBackground, FlatList, SafeAreaView } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, SafeAreaView } from 'react-native';
 
 const topics = [
-  { name: "Anxiety", image: require('../assets/morning.jpg'), screen: "Anxiety" },
-  { name: "Depression", image: require('../assets/present.jpg'), screen: "Depression" },
-  { name: "Time Management", image: require('../assets/energizing.jpg'), screen: "TimeManagement" },
-  { name: "Mental Health Test", image: require('../assets/morning.jpg'), screen: "MentalHealthTest" }
+  { name: "Anxiety", color: ['#D38312', '#A83279'], screen: "Anxiety" },
+  { name: "Depression", color: ['#1E3C72', '#2A5298'], screen: "Depression" },
+  { name: "Time Management", color: ['#4CA1AF', '#C4E0E5'], screen: "TimeManagement" },
+  { name: "Mental Health Test", color: ['#D76D77', '#FFAF7B'], screen: "MentalHealthTest" }
 ];
 
 const HomeScreen = ({ navigation }) => {
-  const renderItem = ({ item }) => (
-    <TouchableOpacity 
-      style={styles.card} 
-      onPress={() => navigation.navigate(item.screen)}
-    >
-      <ImageBackground 
-        source={item.image} 
-        style={styles.cardImage} 
-        imageStyle={{ borderRadius: 20 }}
-      >
-        <View style={styles.overlay}>
-          <Text style={styles.cardText}>{item.name}</Text>
-        </View>
-      </ImageBackground>
-    </TouchableOpacity>
-  );
-
   return (
     <SafeAreaView style={styles.container}>
-      {/* Heading */}
-      <Text style={styles.title}>
-        <Text style={styles.yourText}>Find</Text> <Text style={styles.practicesText}>Support for Your Journey</Text>
-      </Text>
-
-      {/* List of Topics */}
-      <FlatList 
-        data={topics}
-        renderItem={renderItem}
-        keyExtractor={(item, index) => index.toString()}
-        contentContainerStyle={{ paddingBottom: 10 }}
-        showsVerticalScrollIndicator={false}
-      />
+      <Text style={styles.title}>Find Support for Your Journey</Text>
+      <View style={styles.listContainer}>
+        {topics.map((item, index) => (
+          <TouchableOpacity 
+            key={index} 
+            style={[styles.button, { backgroundColor: item.color[0] }]}
+            onPress={() => navigation.navigate(item.screen)}
+          >
+            <Text style={styles.buttonText}>{item.name}</Text>
+          </TouchableOpacity>
+        ))}
+      </View>
     </SafeAreaView>
   );
 };
@@ -48,51 +30,36 @@ const HomeScreen = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: { 
     flex: 1, 
-    backgroundColor: '#E5ECF4', 
-    paddingHorizontal: 45, // Increased padding to prevent touching borders
-    paddingTop: 60 // Adjusted top padding for better spacing
-  },
-  title: { 
-    fontSize: 26, 
-    fontWeight: 'bold', 
-    textAlign: 'center', 
-    marginBottom: 20 // Slightly increased spacing
-  },
-  yourText: { 
-    fontSize: 24, 
-    fontFamily: 'serif', 
-    fontStyle: 'italic', 
-    textAlign: 'center',
-    color: '#333' 
-  },
-  practicesText: { 
-    fontSize: 26, 
-    fontWeight: 'bold', 
-    color: '#222'
-  },
-  card: {
-    marginBottom: 25, // Increased spacing between cards
-    borderRadius: 50,
-    overflow: 'hidden',
-    paddingHorizontal: 10 // Ensuring more space inside
-  },
-  cardImage: {
-    width: '100%',
-    height: 160, // Slightly increased height for better visuals
-    justifyContent: 'center'
-  },
-  overlay: {
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
-    height: '100%',
-    justifyContent: 'center',
+    backgroundColor: '#546C75', 
+    paddingHorizontal: 20, 
+    paddingTop: 50,
     alignItems: 'center'
   },
-  cardText: {
-    fontSize: 20,
-    color: '#fff',
+  title: { 
+    fontSize: 24, 
+    fontWeight: 'bold', 
+    textAlign: 'center', 
+    color: 'white',
+    marginBottom: 20
+  },
+  listContainer: {
+    width: '100%',
+    alignItems: 'center'
+  },
+  button: {
+    width: '90%',
+    height: 100,
+    borderRadius: 20,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginBottom: 15,
+    elevation: 5,
+  },
+  buttonText: {
+    fontSize: 18,
+    color: 'white',
     fontWeight: 'bold'
   }
 });
-
 
 export default HomeScreen;

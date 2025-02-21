@@ -51,7 +51,7 @@ const OptionButton = ({ title, icon, color, onPress }) => {
 };
 
 const styles = StyleSheet.create({
-  container: { flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: '#f5f5f5', padding: 20 },
+  container: { flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: '#A7D8DE', padding: 20 },
   title: { fontSize: 24, fontWeight: 'bold', marginBottom: 10 },
   subtitle: { fontSize: 16, marginBottom: 20, color: 'gray' },
   button: { 
