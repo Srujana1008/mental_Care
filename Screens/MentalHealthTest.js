@@ -32,7 +32,7 @@ const MentalHealthTest = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [result, setResult] = useState(null);
   const [isCalculating, setIsCalculating] = useState(false);
-  const API_URL = "http://172.16.30.150:5500/analyze";
+  const API_URL = "http://172.16.30.206:5500/analyze";
 
   const handleSelect = (value) => {
     const newResponses = [...responses];

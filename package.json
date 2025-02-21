@@ -26,6 +26,7 @@
     "expo-router": "^4.0.17",
     "expo-sms": "^13.0.1",
     "expo-status-bar": "~2.0.1",
+    "express": "^4.21.2",
     "firebase": "^11.3.1",
     "fonts": "^0.0.2",
     "idb": "^8.0.2",
@@ -42,7 +43,10 @@
     "react-native-svg": "^15.11.1",
     "react-native-uuid": "^2.0.3",
     "react-native-vector-icons": "^10.2.0",
-    "react-native-webview": "^13.13.2"
+    "react-native-webview": "^13.13.2",
+    "serialport": "^13.0.0",
+    "socket.io": "^4.8.1",
+    "socket.io-client": "^4.8.1"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0"

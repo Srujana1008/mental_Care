@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { 
-  View, Text, TextInput, Button, Alert, StyleSheet, 
+  View, Text, TextInput, Alert, StyleSheet, 
   TouchableWithoutFeedback, Keyboard, KeyboardAvoidingView, Platform, 
-  FlatList, TouchableOpacity
+  ScrollView, TouchableOpacity
 } from "react-native";
 import LottieView from "lottie-react-native";
 import { collection, addDoc, getDocs, deleteDoc, doc, Timestamp, query, orderBy } from "firebase/firestore";
@@ -44,7 +44,6 @@ const Journal = () => {
       return;
     }
 
-    // 🔹 Show success message **before** saving to Firebase
     Alert.alert("Success", "Journal entry saved!");
     setEntry("");
     Keyboard.dismiss();
@@ -101,64 +100,69 @@ const Journal = () => {
   };
 
   return (
-    <KeyboardAvoidingView 
-      behavior={Platform.OS === "ios" ? "padding" : "height"} 
-      style={styles.container}
-    >
+    <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : "height"} style={styles.container}>
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-        <View style={styles.innerContainer}>
-          
-          {/* Lottie Animation - CENTERED */}
-          <View style={styles.animationContainer}>
-            <LottieView 
-              source={require("../assets/journal_an.json")} 
-              autoPlay 
-              loop 
-              style={styles.animation}
+        <ScrollView contentContainerStyle={styles.scrollContainer} keyboardShouldPersistTaps="handled">
+          <View style={styles.innerContainer}>
+            
+            {/* Lottie Animation */}
+            <View style={styles.animationContainer}>
+              <LottieView 
+                source={require("../assets/journal_an.json")} 
+                autoPlay 
+                loop 
+                style={styles.animation}
+              />
+            </View>
+
+            <Text style={styles.title}>Write Your Journal</Text>
+            <TextInput
+              style={styles.input}
+              placeholder="How was your day?"
+              placeholderTextColor="white"
+              multiline
+              numberOfLines={5}
+              returnKeyType="done"
+              onSubmitEditing={Keyboard.dismiss}
+              blurOnSubmit={true}
+              value={entry}
+              onChangeText={setEntry}
             />
+            
+            {/* Buttons */}
+            <View style={styles.buttonContainer}>
+              <TouchableOpacity style={styles.saveButton} onPress={saveJournalEntry}>
+                <Text style={styles.saveButtonText}>Save Entry</Text>
+              </TouchableOpacity>
+
+              <TouchableOpacity style={styles.historyButton} onPress={toggleHistory}>
+                <Text style={styles.historyButtonText}>
+                  {showHistory ? "Hide History" : "View History"}
+                </Text>
+              </TouchableOpacity>
+            </View>
+
+            {/* Journal History */}
+            {showHistory && (
+              <View style={styles.historyContainer}>
+                <ScrollView contentContainerStyle={styles.historyContent} nestedScrollEnabled>
+                  {journals.map((item) => (
+                    <View key={item.id} style={styles.journalItem}>
+                      <View style={styles.entryContainer}>
+                        <Text style={styles.timestamp}>{item.timestamp}</Text>
+                        <Text style={styles.entryText}>{item.entry}</Text>
+                      </View>
+                      <TouchableOpacity style={styles.deleteButton} onPress={() => deleteJournalEntry(item.id)}>
+                        <Text style={styles.deleteButtonText}>🗑</Text>
+                      </TouchableOpacity>
+                    </View>
+                  ))}
+                </ScrollView>
+              </View>
+            )}
+
           </View>
-
-          <Text style={styles.title}>Write Your Journal</Text>
-          <TextInput
-            style={styles.input}
-            placeholder="How was your day?"
-            multiline
-            numberOfLines={5}
-            returnKeyType="done"
-            onSubmitEditing={Keyboard.dismiss} // Dismiss keyboard on "Done"
-            blurOnSubmit={true} // Ensures the keyboard disappears
-            value={entry}
-            onChangeText={setEntry}
-          />
-          <Button title="Save Entry" onPress={saveJournalEntry} />
-
-          <TouchableOpacity style={styles.historyButton} onPress={toggleHistory}>
-            <Text style={styles.historyButtonText}>
-              {showHistory ? "Hide History" : "View History"}
-            </Text>
-          </TouchableOpacity>
-
-          {showHistory && (
-            <FlatList
-              data={journals}
-              keyExtractor={(item) => item.id}
-              renderItem={({ item }) => (
-                <View style={styles.journalItem}>
-                  <Text style={styles.timestamp}>{item.timestamp}</Text>
-                  <Text style={styles.entryText}>{item.entry}</Text>
-                  <TouchableOpacity 
-                    style={styles.deleteButton} 
-                    onPress={() => deleteJournalEntry(item.id)}
-                  >
-                    <Text style={styles.deleteButtonText}>Delete</Text>
-                  </TouchableOpacity>
-                </View>
-              )}
-              contentContainerStyle={styles.flatListContent}
-            />
-          )}
-
-        </View>
+        </ScrollView>
       </TouchableWithoutFeedback>
     </KeyboardAvoidingView>
   );
@@ -166,58 +170,97 @@ const Journal = () => {
 
 const styles = StyleSheet.create({
   container: { flex: 1 },
+  scrollContainer: { flexGrow: 1 },
   innerContainer: { 
-    flexGrow: 1, 
     padding: 20, 
     alignItems: "center", 
-    justifyContent: "center" 
+    justifyContent: "center", 
+    backgroundColor: '#546C75',
+    flex: 1,
   },
   animationContainer: { 
-    alignItems: "center", // Center horizontally
-    justifyContent: "center", // Center vertically
+    alignItems: "center",
+    justifyContent: "center",
     width: "100%",
   },
-  animation: { width: 200, height: 200 }, // Adjust size as needed
-  title: { fontSize: 22, fontWeight: "bold", marginBottom: 10 },
+  animation: { width: 700, height: 200 }, 
+  title: { 
+    fontSize: 22, 
+    fontWeight: "bold", 
+    marginBottom: 10, 
+    color: "white" 
+  },
   input: { 
     width: "100%", 
     padding: 10, 
     borderWidth: 1, 
-    borderColor: "#ccc", 
-    borderRadius: 5, 
+    borderColor: "white",
+    borderRadius: 8, 
     height: 150, 
     textAlignVertical: "top", 
-    marginBottom: 10
+    marginBottom: 10,
+    backgroundColor: "#546C75",
+    color: "white"
   },
+
+  buttonContainer: {
+    width: "100%",
+    flexDirection: "row",
+    justifyContent: "space-between",
+    marginBottom: 10,
+  },
+
+  saveButton: {
+    backgroundColor: "#A7D8DE",
+    padding: 15,
+    borderRadius: 10,
+  },
+  saveButtonText: { color: "black", fontSize: 16, fontWeight: "bold" },
+
   historyButton: {
-    marginTop: 20,
-    backgroundColor: "#007AFF",
-    padding: 10,
-    borderRadius: 8,
-    alignItems: "center",
-    width: "80%",
+    backgroundColor: "#A7D8DE",
+    padding: 15,
+    borderRadius: 10,
   },
-  historyButtonText: { color: "#fff", fontSize: 16, fontWeight: "bold" },
+  historyButtonText: { color: "black", fontSize: 16, fontWeight: "bold" },
+
+  historyContainer: {
+    width: "100%",
+    maxHeight: 300, 
+    backgroundColor: "#A7D8DE",
+    borderRadius: 10,
+    padding: 10,
+  },
+  historyContent: {
+    paddingBottom: 10,
+  },
+
   journalItem: { 
-    backgroundColor: "#f2f2f2", 
+    flexDirection: "row", 
+    justifyContent: "space-between", 
+    alignItems: "center",
     padding: 10, 
     marginVertical: 5, 
     borderRadius: 5, 
-    width: "100%",
-    flexDirection: "row", 
-    justifyContent: "space-between", 
+    backgroundColor: "#fff"
+  },
+
+  entryContainer: { 
+    flex: 1, 
+    marginRight: 10 
+  },
+
+  deleteButton: { 
+    backgroundColor: "#FFFFFF", 
+    padding: 10, 
+    borderRadius: 10,
+    width: 40, 
+    height: 40, 
+    justifyContent: "center",
     alignItems: "center"
   },
-  timestamp: { fontSize: 12, color: "gray", marginBottom: 5, flex: 1 },
-  entryText: { fontSize: 16, flex: 2 },
-  deleteButton: {
-    backgroundColor: "#FF3B30",
-    paddingVertical: 5,
-    paddingHorizontal: 10,
-    borderRadius: 5,
-  },
+
   deleteButtonText: { color: "#fff", fontWeight: "bold" },
-  flatListContent: { paddingBottom: 20 } // Prevents cutoff on scroll
 });
 
 export default Journal;
