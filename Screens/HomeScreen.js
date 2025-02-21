@@ -1,5 +1,8 @@
 import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, SafeAreaView } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, SafeAreaView, Dimensions } from 'react-native';
+import LottieView from 'lottie-react-native';
+
+const { width, height } = Dimensions.get('window');
 
 const topics = [
   { name: "Anxiety", color: ['#D38312', '#A83279'], screen: "Anxiety" },
@@ -11,17 +14,28 @@ const topics = [
 const HomeScreen = ({ navigation }) => {
   return (
     <SafeAreaView style={styles.container}>
-      <Text style={styles.title}>Find Support for Your Journey</Text>
-      <View style={styles.listContainer}>
-        {topics.map((item, index) => (
-          <TouchableOpacity 
-            key={index} 
-            style={[styles.button, { backgroundColor: item.color[0] }]}
-            onPress={() => navigation.navigate(item.screen)}
-          >
-            <Text style={styles.buttonText}>{item.name}</Text>
-          </TouchableOpacity>
-        ))}
+      {/* Full-screen animated background */}
+      <LottieView
+        source={require('../assets/home_an.json')}
+        autoPlay
+        loop
+        style={styles.backgroundAnimation}
+      />
+
+      {/* Content on top of animation */}
+      <View style={styles.overlay}>
+        <Text style={styles.title}>Find Support for Your Journey</Text>
+        <View style={styles.listContainer}>
+          {topics.map((item, index) => (
+            <TouchableOpacity 
+              key={index} 
+              style={[styles.button, { backgroundColor: item.color[0] }]}
+              onPress={() => navigation.navigate(item.screen)}
+            >
+              <Text style={styles.buttonText}>{item.name}</Text>
+            </TouchableOpacity>
+          ))}
+        </View>
       </View>
     </SafeAreaView>
   );
@@ -30,10 +44,17 @@ const HomeScreen = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: { 
     flex: 1, 
-    backgroundColor: '#546C75', 
-    paddingHorizontal: 20, 
-    paddingTop: 50,
-    alignItems: 'center'
+    position: 'relative',
+  },
+  backgroundAnimation: {
+    position: 'absolute',
+    width: 850,
+    height: 850,
+  },
+  overlay: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   title: { 
     fontSize: 24, 

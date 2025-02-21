@@ -34,6 +34,7 @@ import DepressionTest from './Screens/DepressionTest';
 import MentalHealthTest from './Screens/MentalHealthTest';
 import SplashScreen from './Screens/SplashScreen';
 import HeartRateMonitor from './Screens/HeartRateMonitor';
+//import CounselorScreen from './Screens/CounselorScreen';
 
 
 
@@ -69,6 +70,7 @@ function BottomTabs() {
           else if (route.name === 'Relief') iconName = 'heart';
           else if (route.name === 'Journal') iconName = 'book';
           else if (route.name === 'Pulse') iconName = 'pulse';
+          else if (route.name === 'Counselor') iconName = 'chatbubbles';
 
           return <Ionicons name={iconName} size={size} color={color} />;
         },
@@ -81,6 +83,7 @@ function BottomTabs() {
       <Tab.Screen name="Relief" component={ReliefExercises} />
       <Tab.Screen name="Journal" component={Journal} />
       <Tab.Screen name="Pulse" component={HeartRateMonitor} />
+
       
     </Tab.Navigator>
   );

@@ -1,10 +1,19 @@
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import LottieView from 'lottie-react-native';
 import { FontAwesome5, MaterialIcons, Ionicons } from '@expo/vector-icons';
 
 const TimeManagement = ({ navigation }) => {
   return (
     <View style={styles.container}>
+      {/* Background Animation */}
+      <LottieView 
+        source={require('../assets/home_an.json')} 
+        autoPlay 
+        loop 
+        style={styles.backgroundAnimation}
+      />
+      
       <Text style={styles.title}>Effective Time Management</Text>
       <Text style={styles.subtitle}>Select an option to explore:</Text>
 
@@ -51,9 +60,19 @@ const OptionButton = ({ title, icon, color, onPress }) => {
 };
 
 const styles = StyleSheet.create({
-  container: { flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: '#A7D8DE', padding: 20 },
-  title: { fontSize: 24, fontWeight: 'bold', marginBottom: 10,color:'black' },
-  subtitle: { fontSize: 16, marginBottom: 20, color: 'gray',color:'black' },
+  container: { 
+    flex: 1, 
+    justifyContent: 'center', 
+    alignItems: 'center', 
+    padding: 20 
+  },
+  backgroundAnimation: {
+    position: 'absolute',
+    width: 850,
+    height: 850,
+  },
+  title: { fontSize: 24, fontWeight: 'bold', marginBottom: 10, color:'#FFFFFF' },
+  subtitle: { fontSize: 16, marginBottom: 20, color: '#FFFFFF' },
   button: { 
     flexDirection: 'row',
     alignItems: 'center',

@@ -1,40 +1,54 @@
 import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Dimensions } from 'react-native';
 import { FontAwesome5, MaterialIcons, Ionicons } from '@expo/vector-icons';
+import LottieView from 'lottie-react-native';
+
+const { width, height } = Dimensions.get('window');
 
 const Anxiety = ({ navigation }) => {
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Managing Anxiety</Text>
-      <Text style={styles.subtitle}>Select an option to explore:</Text>
-
-      <OptionButton 
-        title="Take Test" 
-        icon={<FontAwesome5 name="clipboard-list" size={24} color="white" />} 
-        color="#5A69F9" 
-        onPress={() => navigation.navigate('AnxietyTest')}
+      {/* Full-screen animated background */}
+      <LottieView
+        source={require('../assets/home_an.json')}
+        autoPlay
+        loop
+        style={styles.backgroundAnimation}
       />
 
-      <OptionButton 
-        title="Tips" 
-        icon={<MaterialIcons name="tips-and-updates" size={24} color="white" />} 
-        color="#FA6E5A" 
-        onPress={() => navigation.navigate('AnxietyTips')}
-      />
+      {/* Content Overlay */}
+      <View style={styles.overlay}>
+        <Text style={styles.title}>Managing Anxiety</Text>
+        <Text style={styles.subtitle}>Select an option to explore:</Text>
 
-      <OptionButton 
-        title="Watch Related Videos" 
-        icon={<Ionicons name="videocam" size={24} color="white" />} 
-        color="#3CC77D" 
-        onPress={() => navigation.navigate('AnxietyManagementVideos')}
-      />
+        <OptionButton 
+          title="Take Test" 
+          icon={<FontAwesome5 name="clipboard-list" size={24} color="white" />} 
+          color="#5A69F9" 
+          onPress={() => navigation.navigate('AnxietyTest')}
+        />
 
-      <OptionButton 
-        title="Food Recommendations" 
-        icon={<MaterialIcons name="fastfood" size={24} color="white" />} 
-        color="#4BA1D9" 
-        onPress={() => navigation.navigate('Food')}
-      />
+        <OptionButton 
+          title="Tips" 
+          icon={<MaterialIcons name="tips-and-updates" size={24} color="white" />} 
+          color="#FA6E5A" 
+          onPress={() => navigation.navigate('AnxietyTips')}
+        />
+
+        <OptionButton 
+          title="Watch Related Videos" 
+          icon={<Ionicons name="videocam" size={24} color="white" />} 
+          color="#3CC77D" 
+          onPress={() => navigation.navigate('AnxietyManagementVideos')}
+        />
+
+        <OptionButton 
+          title="Food Recommendations" 
+          icon={<MaterialIcons name="fastfood" size={24} color="white" />} 
+          color="#4BA1D9" 
+          onPress={() => navigation.navigate('Food')}
+        />
+      </View>
     </View>
   );
 };
@@ -51,9 +65,34 @@ const OptionButton = ({ title, icon, color, onPress }) => {
 };
 
 const styles = StyleSheet.create({
-  container: { flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: '#A7D8DE', padding: 20 },
-  title: { fontSize: 24, fontWeight: 'bold', marginBottom: 10 },
-  subtitle: { fontSize: 16, marginBottom: 20, color: 'gray' },
+  container: { 
+    flex: 1, 
+    position: 'relative',
+  },
+  backgroundAnimation: {
+    position: 'absolute',
+    width: 850,
+    height: 850,
+  },
+  overlay: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 20,
+  },
+  title: { 
+    fontSize: 24, 
+    fontWeight: 'bold', 
+    marginBottom: 10, 
+    color: 'white',
+    textAlign: 'center',
+  },
+  subtitle: { 
+    fontSize: 16, 
+    marginBottom: 20, 
+    color: 'white',
+    textAlign: 'center',
+  },
   button: { 
     flexDirection: 'row',
     alignItems: 'center',

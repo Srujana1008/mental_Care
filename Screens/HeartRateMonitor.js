@@ -3,7 +3,7 @@ import { View, Text, StyleSheet, ActivityIndicator, Alert, TouchableOpacity } fr
 import io from 'socket.io-client';
 import axios from 'axios';
 
-const API_URL = 'http://172.16.30.206:3000'; // Update with your server IP
+const API_URL = 'http://172.16.30.150:3000'; // Update with your server IP
 const THRESHOLD = 120; // Alert threshold for high heart rate
 
 const HeartRateMonitor = () => {

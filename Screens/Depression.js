@@ -1,10 +1,21 @@
 import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Dimensions } from 'react-native';
+import LottieView from 'lottie-react-native';
 import { FontAwesome5, MaterialIcons, Ionicons } from '@expo/vector-icons';
+
+const { width, height } = Dimensions.get('window');
 
 const Depression = ({ navigation }) => {
   return (
     <View style={styles.container}>
+      {/* Background Animation */}
+      <LottieView 
+        source={require('../assets/home_an.json')} 
+        autoPlay 
+        loop 
+        style={styles.backgroundAnimation}
+      />
+      
       <Text style={styles.title}>Managing Depression</Text>
       <Text style={styles.subtitle}>Select an option to explore:</Text>
 
@@ -51,9 +62,19 @@ const OptionButton = ({ title, icon, color, onPress }) => {
 };
 
 const styles = StyleSheet.create({
-  container: { flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: '#A7D8DE', padding: 20 },
-  title: { fontSize: 24, fontWeight: 'bold', marginBottom: 10 },
-  subtitle: { fontSize: 16, marginBottom: 20, color: 'gray' },
+  container: { 
+    flex: 1, 
+    justifyContent: 'center', 
+    alignItems: 'center', 
+    padding: 20 
+  },
+  backgroundAnimation: {
+    position: 'absolute',
+    width: 850,
+    height: 850,
+  },
+  title: { fontSize: 24, fontWeight: 'bold', marginBottom: 10, color:'#FFFFFF' },
+  subtitle: { fontSize: 16, marginBottom: 20, color: '#FFFFFF' },
   button: { 
     flexDirection: 'row',
     alignItems: 'center',
