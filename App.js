@@ -34,7 +34,9 @@ import DepressionTest from './Screens/DepressionTest';
 import MentalHealthTest from './Screens/MentalHealthTest';
 import SplashScreen from './Screens/SplashScreen';
 import HeartRateMonitor from './Screens/HeartRateMonitor';
-//import CounselorScreen from './Screens/CounselorScreen';
+import BetterSleep from './Screens/BetterSleep';
+import SleepMusic from './Screens/SleepMusic';
+import MoodTracking from './Screens/MoodTracking';
 
 
 
@@ -70,24 +72,41 @@ function BottomTabs() {
           else if (route.name === 'Relief') iconName = 'heart';
           else if (route.name === 'Journal') iconName = 'book';
           else if (route.name === 'Pulse') iconName = 'pulse';
-          else if (route.name === 'Counselor') iconName = 'chatbubbles';
+          else if (route.name === 'Mood') iconName = 'happy';
 
           return <Ionicons name={iconName} size={size} color={color} />;
         },
         tabBarActiveTintColor: '#007AFF',
         tabBarInactiveTintColor: 'gray',
-        tabBarStyle: { backgroundColor: '#fff', height: 60 },
+        tabBarStyle: { backgroundColor: '#fff', height: 70 },
       })}
     >
       <Tab.Screen name="Home" component={HomeScreen} />
       <Tab.Screen name="Relief" component={ReliefExercises} />
+
+      {/* SOS Button in Footer */}
+      <Tab.Screen
+        name="SOS"
+        component={HomeScreen} // Temporary, can be any screen
+        options={{
+          tabBarButton: (props) => (
+            <TouchableOpacity 
+              style={styles.sosButton}
+              onPress={handleSOS}
+            >
+              <Ionicons name="call" size={30} color="white" />
+            </TouchableOpacity>
+          ),
+        }}
+      />
+
       <Tab.Screen name="Journal" component={Journal} />
       <Tab.Screen name="Pulse" component={HeartRateMonitor} />
-
-      
+      <Tab.Screen name="Mood" component={MoodTracking}/>
     </Tab.Navigator>
   );
 }
+
 
 
 export default function App() {
@@ -130,17 +149,16 @@ export default function App() {
           <Stack.Screen name="AnxietyTest" component={AnxietyTest}/>
           <Stack.Screen name="DepressionTest" component={DepressionTest}/>
           <Stack.Screen name="MentalHealthTest" component={MentalHealthTest}/>
+          <Stack.Screen name="BetterSleep" component={BetterSleep} /> 
+          <Stack.Screen name="SleepMusic" component={SleepMusic}/>
+          <Stack.Screen name="MoodTracking" component={MoodTracking} />
           
 
 
 
         </Stack.Navigator>
 
-        {/* Floating SOS Button */}
-        <TouchableOpacity style={styles.sosButton} onPress={handleSOS}>
-          <Ionicons name="alert" size={30} color="white" />
-          <Text style={styles.sosText}>SOS</Text>
-        </TouchableOpacity>
+       
       </View>
       )}
     </NavigationContainer>
@@ -149,12 +167,10 @@ export default function App() {
 
 const styles = StyleSheet.create({
   sosButton: {
-    position: 'absolute',
-    bottom: 80, // Adjust above footer
-    right: 20, // Right corner
     backgroundColor: 'red',
-    padding: 15,
-    borderRadius: 50,
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    borderRadius: 30,
     alignItems: 'center',
     justifyContent: 'center',
     flexDirection: 'row',
@@ -162,10 +178,8 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.3,
     shadowRadius: 5,
     elevation: 5,
+    position: 'absolute',
+    bottom: 10, // Align with tab bar
   },
-  sosText: {
-    color: 'white',
-    fontWeight: 'bold',
-    marginLeft: 5,
-  },
+  
 });

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, Alert } from 'react-native';
 import { Audio } from 'expo-av';
+import LottieView from 'lottie-react-native';
 
 const Pomodoro = () => {
   const [time, setTime] = useState(25 * 60); // 25 minutes in seconds
@@ -82,6 +83,14 @@ const Pomodoro = () => {
 
   return (
     <View style={styles.container}>
+      {/* Lottie Animation */}
+      <LottieView
+        source={require('../assets/pom_an.json')}
+        autoPlay
+        loop
+        style={styles.animation}
+      />
+      
       <Text style={styles.title}>{isBreak ? 'Break Time! ' : 'Focus Mode! '}</Text>
       <Text style={styles.timer}>{formatTime(time)}</Text>
       <View style={styles.buttonContainer}>
@@ -102,7 +111,8 @@ const Pomodoro = () => {
 
 const styles = StyleSheet.create({
   container: { flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: '#546C75' },
-  title: { fontSize: 24, fontWeight: 'bold', marginBottom: 20,color:'white' },
+  animation: { width: 150, height: 150 }, // Adjust size as needed
+  title: { fontSize: 24, fontWeight: 'bold', marginBottom: 20, color: 'white' },
   timer: { fontSize: 48, fontWeight: 'bold', color: 'white', marginBottom: 20 },
   buttonContainer: { flexDirection: 'row', marginTop: 20 },
   button: { backgroundColor: '#A7D8DE', padding: 15, margin: 10, borderRadius: 8 },

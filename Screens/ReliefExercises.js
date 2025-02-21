@@ -1,11 +1,14 @@
 import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, Dimensions } from 'react-native';
 import { Audio } from 'expo-av';
 import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
+import LottieView from 'lottie-react-native';
+
+const { width, height } = Dimensions.get('window');
 
 export default function ReliefExercises() {
-  const navigation = useNavigation(); // Added navigation hook
+  const navigation = useNavigation();
   const [sound, setSound] = useState(null);
   const [isPlaying, setIsPlaying] = useState(false);
 
@@ -17,22 +20,30 @@ export default function ReliefExercises() {
       setSound(sound);
       await sound.playAsync();
       setIsPlaying(true);
-    } else if (sound) { // Ensure sound exists before trying to stop it
+    } else if (sound) {
       await sound.stopAsync();
-      await sound.unloadAsync(); // Properly unload the sound
+      await sound.unloadAsync();
       setIsPlaying(false);
-      setSound(null); // Reset sound state
+      setSound(null);
     }
   }
-  
+
   return (
     <View style={styles.container}>
+      {/* Background Animation */}
+      <LottieView
+        source={require('../assets/home_an.json')}
+        autoPlay
+        loop
+        style={styles.backgroundAnimation}
+      />
+
       {/* Header */}
-      <Text style={styles.header}> Relief Exercises</Text>
+      <Text style={styles.header}>Relief Exercises</Text>
 
       {/* Breathing Exercise */}
       <View style={styles.card}>
-        <Text style={styles.title}> Breathing Exercise</Text>
+        <Text style={styles.title}>Breathing Exercise</Text>
         <Text style={styles.text}>Inhale for 4 seconds, hold for 4 seconds, and exhale for 4 seconds.</Text>
         <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('BreathingExercise')}>
           <Text style={styles.buttonText}>Start Breathing</Text>
@@ -41,17 +52,17 @@ export default function ReliefExercises() {
 
       {/* Guided Meditation */}
       <View style={styles.card}>
-        <Text style={styles.title}> Guided Meditation</Text>
-        <Text style={styles.text}> Let's set a timer and Meditate.</Text>
+        <Text style={styles.title}>Guided Meditation</Text>
+        <Text style={styles.text}>Let's set a timer and meditate.</Text>
         <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('MeditationTimer')}>
-         <Text style={styles.buttonText}>Start Meditation</Text>
+          <Text style={styles.buttonText}>Start Meditation</Text>
         </TouchableOpacity>
       </View>
 
       {/* Relaxing Music */}
       <View style={styles.card}>
-        <Text style={styles.title}> Relaxing Music</Text>
-        <Text style={styles.text}> Weightless Song </Text>
+        <Text style={styles.title}>Relaxing Music</Text>
+        <Text style={styles.text}>Weightless Song</Text>
         <TouchableOpacity style={styles.musicButton} onPress={playMusic}>
           <Ionicons name={isPlaying ? 'pause' : 'play'} size={30} color="white" />
           <Text style={styles.buttonText}>{isPlaying ? 'Pause Music' : 'Play Music'}</Text>
@@ -64,9 +75,16 @@ export default function ReliefExercises() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#546C75',
     alignItems: 'center',
     padding: 20,
+    backgroundColor: '#546C75',
+  },
+  backgroundAnimation: {
+    position: 'absolute',
+    width: 850,
+    height: 850,
+    top: 0,
+    left: 0,
   },
   header: {
     fontSize: 24,
@@ -112,3 +130,5 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
 });
+
+
