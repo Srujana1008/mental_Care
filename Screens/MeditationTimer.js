@@ -58,7 +58,7 @@ export default function MeditationTimer({ navigation }) {
       <View style={styles.container}>
         {/* Animation */}
         <LottieView
-          source={require('/Users/divyabindu/mental_care/assets/medi_an.json')}
+          source={require('../assets/medi_an.json')}
           autoPlay
           loop
           style={styles.animation}

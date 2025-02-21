@@ -7,6 +7,7 @@ import { View, TouchableOpacity, StyleSheet, Text } from 'react-native';
 import * as Linking from 'expo-linking';
 import * as SMS from 'expo-sms';
 import * as Notifications from 'expo-notifications';
+import  { useState, useEffect } from 'react';
 
 Notifications.requestPermissionsAsync();
 // Import Screens
@@ -30,7 +31,8 @@ import AnxietyManagementVideos from './Screens/AnxietyManagementVideos';
 import DepressionVideos from './Screens/DepressionVideos';
 import AnxietyTest from './Screens/AnxietyTest';
 import DepressionTest from './Screens/DepressionTest';
-import MentalHealthTest from './Screens/MentalHealthTest'
+import MentalHealthTest from './Screens/MentalHealthTest';
+import SplashScreen from './Screens/SplashScreen';
 
 
 
@@ -81,9 +83,21 @@ function BottomTabs() {
   );
 }
 
+
 export default function App() {
+  
+    const [isLoading, setIsLoading] = useState(true);
+  
+    useEffect(() => {
+      setTimeout(() => {
+        setIsLoading(false); // Hide splash screen after 3 seconds
+      }, 3000);
+    }, []);
   return (
     <NavigationContainer>
+    {isLoading ? (
+        <SplashScreen />
+      ) : (
       <View style={{ flex: 1 }}>
         {/* Stack Navigator for Screens Outside Footer */}
         <Stack.Navigator>
@@ -110,6 +124,7 @@ export default function App() {
           <Stack.Screen name="AnxietyTest" component={AnxietyTest}/>
           <Stack.Screen name="DepressionTest" component={DepressionTest}/>
           <Stack.Screen name="MentalHealthTest" component={MentalHealthTest}/>
+          
 
 
 
@@ -121,6 +136,7 @@ export default function App() {
           <Text style={styles.sosText}>SOS</Text>
         </TouchableOpacity>
       </View>
+      )}
     </NavigationContainer>
   );
 }
