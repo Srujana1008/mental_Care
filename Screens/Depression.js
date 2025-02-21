@@ -10,7 +10,7 @@ const Depression = ({ navigation }) => {
       {/* Tips */}
       <TouchableOpacity 
               style={styles.button} 
-              onPress={() => navigation.navigate('Take Test')}>
+              onPress={() => navigation.navigate('DepressionTest')}>
               <Text style={styles.buttonText}>📝 Take Test</Text>
             </TouchableOpacity>
             <TouchableOpacity 

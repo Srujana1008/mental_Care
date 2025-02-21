@@ -9,7 +9,7 @@ const Anxiety = ({ navigation }) => {
       
       <TouchableOpacity 
         style={styles.button} 
-        onPress={() => navigation.navigate('Take Test')}>
+        onPress={() => navigation.navigate('AnxietyTest')}>
         <Text style={styles.buttonText}>📝 Take Test</Text>
       </TouchableOpacity>
 

@@ -28,6 +28,9 @@ import Pomodoro from './Screens/Pomodoro';
 import TimeManagementVideos from './Screens/TimeManagementVideos';
 import AnxietyManagementVideos from './Screens/AnxietyManagementVideos';
 import DepressionVideos from './Screens/DepressionVideos';
+import AnxietyTest from './Screens/AnxietyTest';
+import DepressionTest from './Screens/DepressionTest';
+import MentalHealthTest from './Screens/MentalHealthTest'
 
 
 
@@ -104,6 +107,9 @@ export default function App() {
           <Stack.Screen name="TimeManagementVideos" component={TimeManagementVideos}/>
           <Stack.Screen name="AnxietyManagementVideos" component={AnxietyManagementVideos}/>
           <Stack.Screen name="DepressionVideos" component={DepressionVideos}/>
+          <Stack.Screen name="AnxietyTest" component={AnxietyTest}/>
+          <Stack.Screen name="DepressionTest" component={DepressionTest}/>
+          <Stack.Screen name="MentalHealthTest" component={MentalHealthTest}/>
 
 
 
