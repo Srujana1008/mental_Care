@@ -134,7 +134,7 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
-    backgroundColor: '#f5f5f5',
+    backgroundColor: '#546C75',
     alignItems: 'center',
     justifyContent: 'center',
     padding: 20,
@@ -148,48 +148,59 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontWeight: 'bold',
     marginBottom: 20,
+    color:'whitesmoke'
   },
   inputRow: {
     flexDirection: 'row',
     alignItems: 'center',
     marginBottom: 20,
+    color:'whitesmoke'
+
   },
   input: {
     width: 60,
     height: 40,
     borderWidth: 1,
-    borderColor: '#007AFF',
+    borderColor: 'white',
     textAlign: 'center',
     fontSize: 18,
+    color:'white',
     borderRadius: 8,
     marginHorizontal: 5,
   },
   label: {
     fontSize: 14,
     fontWeight: 'bold',
+    color:'white'
   },
   timerText: {
     fontSize: 28,
     fontWeight: 'bold',
     marginVertical: 20,
+    color:'white'
+
   },
   buttonContainer: {
     flexDirection: 'row',
     marginTop: 20,
   },
   buttonStart: {
-    backgroundColor: '#007AFF',
+    backgroundColor: '#A7D8DE',
     padding: 15,
     borderRadius: 10,
     marginRight: 10,
+    color:'black'
+
   },
   buttonStop: {
     backgroundColor: 'red',
     padding: 15,
     borderRadius: 10,
+    color:'black'
+
   },
   buttonText: {
-    color: 'white',
+    color: 'black',
     fontSize: 16,
     fontWeight: 'bold',
   },

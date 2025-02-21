@@ -58,16 +58,17 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#D8EFD3',
+    backgroundColor: '#546C75',
   },
   title: {
     fontSize: 24,
     fontWeight: 'bold',
     marginBottom: 20,
+    color:'whitesmoke'
   },
   animation: {
-    width: 200,
-    height: 200,
+    width: 500,
+    height: 500,
   },
   breathText: {
     marginTop: 20,
@@ -75,5 +76,6 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     color: '#333',
     textAlign: 'center',
+    color:'whitesmoke'
   },
 });

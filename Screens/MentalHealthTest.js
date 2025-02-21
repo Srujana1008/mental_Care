@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, ActivityIndicator } from 'react-native';
+import axios from 'axios';
 
 const questions = [
   "I feel tense or restless",
@@ -30,6 +31,8 @@ const MentalHealthTest = () => {
   const [responses, setResponses] = useState(Array(questions.length).fill(null));
   const [currentIndex, setCurrentIndex] = useState(0);
   const [result, setResult] = useState(null);
+  const [isCalculating, setIsCalculating] = useState(false);
+  const API_URL = "http://172.16.30.150:5500/analyze";
 
   const handleSelect = (value) => {
     const newResponses = [...responses];
@@ -37,35 +40,67 @@ const MentalHealthTest = () => {
     setResponses(newResponses);
   };
 
-  const calculateResult = () => {
-    let anxietyScore = 0;
-    let depressionScore = 0;
-
-    responses.forEach((response, index) => {
-      const score = response !== null ? options.indexOf(response) : 0;
-      if ([0, 1, 5, 9, 10, 12, 14, 16, 19].includes(index)) {
-        anxietyScore += score;
-      }
-      if ([2, 3, 4, 6, 7, 8, 11, 13, 15, 18].includes(index)) {
-        depressionScore += score;
-      }
-    });
-
-    let resultType = "No significant anxiety or depression";
-    if (anxietyScore > 25 && depressionScore > 25) {
-      resultType = "Signs of Both Anxiety and Depression";
-    } else if (anxietyScore > 25) {
-      resultType = "Signs of Anxiety";
-    } else if (depressionScore > 25) {
-      resultType = "Signs of Depression";
+  const goToNext = () => {
+    if (responses[currentIndex] !== null) {
+      setCurrentIndex(currentIndex + 1);
     }
-
-    setResult({ type: resultType, anxietyScore, depressionScore });
   };
 
+  const calculateResult = async () => {
+    if (responses.includes(null)) {
+      return; // Don't proceed if any questions are unanswered
+    }
+    
+    setIsCalculating(true);
+    
+    try {
+        console.log("Sending data to:", API_URL);
+        console.log("Data being sent:", { responses });
+        
+        const response = await axios.post(API_URL, { responses }, {
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            timeout: 60000 // 60 second timeout
+        });
+        
+        console.log("Response from server:", response.data);
+        
+        if (response.data.result) {
+            setResult({ type: response.data.result });
+        } else if (response.data.error) {
+            setResult({ type: `Error: ${response.data.error}` });
+        } else {
+            setResult({ type: "Undefined response from server" });
+        }
+    } catch (error) {
+        console.error("Error details:", error);
+        if (error.response) {
+            // The server responded with a status code outside the 2xx range
+            console.error("Server responded with:", error.response.data);
+            setResult({ type: `Server error: ${error.response.status}` });
+        } else if (error.request) {
+            // The request was made but no response was received
+            console.error("No response received");
+            setResult({ type: "Could not connect to server. Check that the server is running and accessible." });
+        } else {
+            // Something happened in setting up the request
+            console.error("Request setup error:", error.message);
+            setResult({ type: `Request error: ${error.message}` });
+        }
+    } finally {
+        setIsCalculating(false);
+    }
+  };
+  
   return (
     <View style={styles.container}>
-      {!result ? (
+      {isCalculating ? (
+        <View style={styles.calculatingContainer}>
+          <ActivityIndicator size="large" color="#F5F5F5" />
+          <Text style={styles.calculatingText}>Calculating result... please wait</Text>
+        </View>
+      ) : !result ? (
         <>
           <Text style={styles.title}>Mental Health Assessment</Text>
           <Text style={styles.question}>{questions[currentIndex]}</Text>
@@ -86,11 +121,17 @@ const MentalHealthTest = () => {
               </TouchableOpacity>
             )}
             {currentIndex < questions.length - 1 ? (
-              <TouchableOpacity style={styles.navButton} onPress={() => setCurrentIndex(currentIndex + 1)}>
+              <TouchableOpacity 
+                style={[styles.navButton, responses[currentIndex] === null && styles.disabledButton]} 
+                onPress={goToNext}
+                disabled={responses[currentIndex] === null}>
                 <Text style={styles.navButtonText}>Next →</Text>
               </TouchableOpacity>
             ) : (
-              <TouchableOpacity style={styles.submitButton} onPress={calculateResult}>
+              <TouchableOpacity 
+                style={[styles.submitButton, responses.includes(null) && styles.disabledButton]} 
+                onPress={calculateResult}
+                disabled={responses.includes(null)}>
                 <Text style={styles.submitText}>Submit</Text>
               </TouchableOpacity>
             )}
@@ -107,21 +148,23 @@ const MentalHealthTest = () => {
 };
 
 const styles = StyleSheet.create({
-  container: { flex: 1, padding: 20, justifyContent: 'center', alignItems: 'center', backgroundColor: '#f5f5f5' },
-  title: { fontSize: 24, fontWeight: 'bold', marginBottom: 20 },
-  question: { fontSize: 18, fontWeight: 'bold', textAlign: 'center', marginBottom: 20 },
+  container: { flex: 1, padding: 20, justifyContent: 'center', alignItems: 'center', backgroundColor: '#546C75' },
+  title: { fontSize: 24, fontWeight: 'bold', marginBottom: 20, color:'#F5F5F5' },
+  question: { fontSize: 18, fontWeight: 'bold', textAlign: 'center', marginBottom: 20, color:'#F5F5F5' },
   optionsContainer: { flexDirection: 'column', alignItems: 'center', marginBottom: 20 },
-  optionButton: { padding: 10, marginVertical: 5, width: 200, backgroundColor: '#ddd', borderRadius: 5, alignItems: 'center' },
-  selectedOption: { backgroundColor: '#007AFF' },
+  optionButton: { padding: 10, marginVertical: 5, width: 200, backgroundColor: '#A7D8DE', borderRadius: 5, alignItems: 'center' },
+  selectedOption: { backgroundColor: '#546C75' },
   optionText: { color: '#000', fontSize: 16 },
   navButtons: { flexDirection: 'row', justifyContent: 'space-between', width: '100%' },
-  navButton: { backgroundColor: '#007AFF', padding: 10, borderRadius: 8, width: 100, alignItems: 'center' },
-  navButtonText: { color: '#fff', fontSize: 16 },
-  submitButton: { backgroundColor: '#007AFF', padding: 15, borderRadius: 8, marginTop: 20, width: 150, alignItems: 'center' },
+  navButton: { backgroundColor: '#A7D8DE', padding: 10, borderRadius: 8, width: 100, alignItems: 'center' },
+  navButtonText: { color: '#000', fontSize: 16 },
+  disabledButton: { backgroundColor: '#cccccc', opacity: 0.7 },
+  submitButton: { backgroundColor: '#A7D8DE', padding: 15, borderRadius: 8, marginTop: 20, width: 150, alignItems: 'center' },
   submitText: { color: '#fff', fontSize: 16, fontWeight: 'bold' },
   resultContainer: { marginTop: 20, alignItems: 'center' },
   resultText: { fontSize: 18, fontWeight: 'bold' },
-  resultGraph: { fontSize: 22, fontWeight: 'bold', color: '#007AFF' }
+  resultGraph: { fontSize: 22, fontWeight: 'bold', color: '#A7D8DE' },
+  calculatingContainer: { alignItems: 'center', justifyContent: 'center' },
+  calculatingText: { marginTop: 20, fontSize: 18, color: '#A7D8DE' }
 });
-
 export default MentalHealthTest;

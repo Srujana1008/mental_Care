@@ -25,15 +25,14 @@ export default function ReliefExercises() {
     }
   }
   
-
   return (
     <View style={styles.container}>
       {/* Header */}
-      <Text style={styles.header}>🧘 Relief Exercises</Text>
+      <Text style={styles.header}> Relief Exercises</Text>
 
       {/* Breathing Exercise */}
       <View style={styles.card}>
-        <Text style={styles.title}>🌬 Breathing Exercise</Text>
+        <Text style={styles.title}> Breathing Exercise</Text>
         <Text style={styles.text}>Inhale for 4 seconds, hold for 4 seconds, and exhale for 4 seconds.</Text>
         <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('BreathingExercise')}>
           <Text style={styles.buttonText}>Start Breathing</Text>
@@ -42,7 +41,7 @@ export default function ReliefExercises() {
 
       {/* Guided Meditation */}
       <View style={styles.card}>
-        <Text style={styles.title}>🕊 Guided Meditation</Text>
+        <Text style={styles.title}> Guided Meditation</Text>
         <Text style={styles.text}> Let's set a timer and Meditate.</Text>
         <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('MeditationTimer')}>
          <Text style={styles.buttonText}>Start Meditation</Text>
@@ -51,8 +50,8 @@ export default function ReliefExercises() {
 
       {/* Relaxing Music */}
       <View style={styles.card}>
-        <Text style={styles.title}>🎵 Relaxing Music</Text>
-        <Text style={styles.text}> Weightless ong </Text>
+        <Text style={styles.title}> Relaxing Music</Text>
+        <Text style={styles.text}> Weightless Song </Text>
         <TouchableOpacity style={styles.musicButton} onPress={playMusic}>
           <Ionicons name={isPlaying ? 'pause' : 'play'} size={30} color="white" />
           <Text style={styles.buttonText}>{isPlaying ? 'Pause Music' : 'Play Music'}</Text>
@@ -65,18 +64,19 @@ export default function ReliefExercises() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f5f5f5',
+    backgroundColor: '#546C75',
     alignItems: 'center',
     padding: 20,
   },
   header: {
     fontSize: 24,
     fontWeight: 'bold',
+    color: 'white',
     marginBottom: 20,
   },
   card: {
     width: '90%',
-    backgroundColor: '#fff',
+    backgroundColor: '#A7D8DE',
     padding: 20,
     borderRadius: 10,
     marginBottom: 15,
@@ -96,7 +96,7 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   button: {
-    backgroundColor: '#007AFF',
+    backgroundColor: '#546C75',
     padding: 10,
     borderRadius: 8,
   },
@@ -106,7 +106,7 @@ const styles = StyleSheet.create({
   },
   musicButton: {
     flexDirection: 'row',
-    backgroundColor: '#007AFF',
+    backgroundColor: '#546C75',
     padding: 10,
     borderRadius: 8,
     alignItems: 'center',
