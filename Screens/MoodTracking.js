@@ -191,8 +191,8 @@ const styles = StyleSheet.create({
     height: 40, 
     justifyContent: "center",
     alignItems: "center",
-    left:300,
-    bottom:40,
+    left:310,
+    bottom:10,
   },
   deleteMessage: {
     fontSize: 16,

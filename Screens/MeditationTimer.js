@@ -64,7 +64,7 @@ export default function MeditationTimer({ navigation }) {
           style={styles.animation}
         />
 
-        <Text style={styles.header}>🧘 Meditation Timer</Text>
+        <Text style={styles.header}> Meditation Timer</Text>
 
         {/* Timer Input Fields */}
         <View style={styles.inputRow}>
