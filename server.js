@@ -64,5 +64,5 @@ app.get('/heartbeat', (req, res) => {
 
 // **Start Server**
 server.listen(SERVER_PORT, () => {
-  console.log(`🚀 Server running on http://172.16.30.206:${SERVER_PORT}`);
+  console.log(`🚀 Server running on http:// 172.16.30.206:${SERVER_PORT}`);
 });

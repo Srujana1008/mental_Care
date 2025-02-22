@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, ActivityIndicator, Alert, TouchableOpacity } from 'react-native';
+import LottieView from 'lottie-react-native';
 import io from 'socket.io-client';
 import axios from 'axios';
 
@@ -22,8 +23,6 @@ const HeartRateMonitor = () => {
         if (heartRateReadings.length < 10) {
           heartRateReadings.push(data);
         }
-
-        // Show current reading
         setHeartRate(data);
       });
 
@@ -54,23 +53,33 @@ const HeartRateMonitor = () => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Heart Rate Monitor</Text>
+      {/* Background Animation */}
+      <LottieView 
+        source={require('../assets/home_an.json')} 
+        autoPlay 
+        loop
+        style={styles.backgroundAnimation}
+      />
 
-      {loading ? (
-        <ActivityIndicator size="large" color="#007AFF" />
-      ) : heartRate !== null ? (
-        <Text style={styles.heartRate}>{heartRate} BPM</Text>
-      ) : (
-        <Text style={styles.info}>Press "Start" to track heart rate</Text>
-      )}
+      <View style={styles.overlay}>
+        <Text style={styles.title}>Heart Rate Monitor</Text>
 
-      <TouchableOpacity 
-        style={styles.button}
-        onPress={startTracking}
-        disabled={loading}
-      >
-        <Text style={styles.buttonText}>Start Heart Rate</Text>
-      </TouchableOpacity>
+        {loading ? (
+          <ActivityIndicator size="large" color="#007AFF" />
+        ) : heartRate !== null ? (
+          <Text style={styles.heartRate}>{heartRate} BPM</Text>
+        ) : (
+          <Text style={styles.info}>Press "Start" to track heart rate</Text>
+        )}
+
+        <TouchableOpacity 
+          style={styles.button}
+          onPress={startTracking}
+          disabled={loading}
+        >
+          <Text style={styles.buttonText}>Start Heart Rate</Text>
+        </TouchableOpacity>
+      </View>
     </View>
   );
 };
@@ -80,7 +89,18 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#546C75',
+  },
+  backgroundAnimation: {
+    position: 'absolute',
+    width: 850,
+    height: 850,
+  },
+  overlay: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: '100%',
+    backgroundColor: 'rgba(0,0,0,0.3)', // Transparent overlay for better visibility
   },
   title: {
     fontSize: 24,

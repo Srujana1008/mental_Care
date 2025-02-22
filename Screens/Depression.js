@@ -21,29 +21,29 @@ const Depression = ({ navigation }) => {
 
       <OptionButton 
         title="Take Test" 
-        icon={<FontAwesome5 name="clipboard-list" size={24} color="white" />} 
-        color="#5A69F9" 
+        icon={<FontAwesome5 name="clipboard-list" size={24} color="black" />} 
+        color="#A7D8DE" 
         onPress={() => navigation.navigate('DepressionTest')}
       />
 
       <OptionButton 
         title="Tips" 
-        icon={<MaterialIcons name="tips-and-updates" size={24} color="white" />} 
-        color="#FA6E5A" 
+        icon={<MaterialIcons name="tips-and-updates" size={24} color="black" />} 
+        color="#A7D8DE" 
         onPress={() => navigation.navigate('DepressionTips')}
       />
 
       <OptionButton 
         title="Watch Related Videos" 
-        icon={<Ionicons name="videocam" size={24} color="white" />} 
-        color="#3CC77D" 
+        icon={<Ionicons name="videocam" size={24} color="black" />} 
+        color="#A7D8DE" 
         onPress={() => navigation.navigate('DepressionVideos')}
       />
 
       <OptionButton 
         title="Food Recommendations" 
-        icon={<MaterialIcons name="fastfood" size={24} color="white" />} 
-        color="#4BA1D9" 
+        icon={<MaterialIcons name="fastfood" size={24} color="black" />} 
+        color="#A7D8DE" 
         onPress={() => navigation.navigate('DepressionFood')}
       />
     </View>
@@ -92,7 +92,7 @@ const styles = StyleSheet.create({
     borderRadius: 10 
   },
   buttonText: { 
-    color: '#fff', 
+    color: 'black', 
     fontSize: 18, 
     fontWeight: 'bold', 
     flex: 1 

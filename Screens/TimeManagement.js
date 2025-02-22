@@ -19,29 +19,29 @@ const TimeManagement = ({ navigation }) => {
 
       <OptionButton 
         title="Tips" 
-        icon={<MaterialIcons name="tips-and-updates" size={24} color="white" />} 
-        color="#FA6E5A" 
+        icon={<MaterialIcons name="tips-and-updates" size={24} color="black" />} 
+        color="#A7D8DE" 
         onPress={() => navigation.navigate('TimeManagementTips')}
       />
 
       <OptionButton 
         title="Watch Related Videos" 
-        icon={<Ionicons name="videocam" size={24} color="white" />} 
-        color="#3CC77D" 
+        icon={<Ionicons name="videocam" size={24} color="black" />} 
+        color="#A7D8DE" 
         onPress={() => navigation.navigate('TimeManagementVideos')}
       />
 
       <OptionButton 
         title="To-Do List" 
-        icon={<FontAwesome5 name="tasks" size={24} color="white" />} 
-        color="#5A69F9" 
+        icon={<FontAwesome5 name="tasks" size={24} color="black" />} 
+        color="#A7D8DE" 
         onPress={() => navigation.navigate('ToDoList')}
       />
 
       <OptionButton 
         title="Pomodoro Technique" 
-        icon={<Ionicons name="hourglass" size={24} color="white" />} 
-        color="#4BA1D9" 
+        icon={<Ionicons name="hourglass" size={24} color="black" />} 
+        color="#A7D8DE" 
         onPress={() => navigation.navigate('Pomodoro')}
       />
     </View>
@@ -90,7 +90,7 @@ const styles = StyleSheet.create({
     borderRadius: 10 
   },
   buttonText: { 
-    color: '#fff', 
+    color: 'black', 
     fontSize: 18, 
     fontWeight: 'bold', 
     flex: 1 

@@ -3,8 +3,9 @@ import { View, Text, TextInput, ScrollView, StyleSheet, TouchableOpacity } from 
 import Sentiment from "sentiment";
 import * as Speech from "expo-speech";
 import { db } from "../firebaseConfig"; 
-import { collection, addDoc, getDocs, query, orderBy } from "firebase/firestore";
+import { collection, addDoc, getDocs, query, orderBy, doc, deleteDoc } from "firebase/firestore"; 
 import { format } from "date-fns"; // Install with npm install date-fns
+import LottieView from "lottie-react-native"; // ✅ Import Lottie
 
 const MoodTracking = () => {
   const [inputText, setInputText] = useState("");
@@ -57,49 +58,77 @@ const MoodTracking = () => {
     }
   };
 
+  const deleteMood = async (id) => {
+    try {
+      await deleteDoc(doc(db, "moodHistory", id));
+      fetchMoodHistory(); // Refresh mood history after deletion
+    } catch (error) {
+      console.error("❌ Error deleting mood:", error);
+    }
+  };
+
   return (
-    <ScrollView style={styles.container}>
-      <Text style={styles.header}>Mental Health Check-in</Text>
-      <TextInput
-        style={styles.input}
-        placeholder="How are you feeling today?"
-        onChangeText={setInputText}
-        value={inputText}
-        multiline
+    <View style={styles.container}>
+      {/* Background Animation */}
+      <LottieView
+        source={require("../assets/home_an.json")} // ✅ Make sure the path is correct
+        autoPlay
+        loop
+        style={StyleSheet.absoluteFillObject} // Covers entire background
       />
 
-      {/* Custom Analyze Mood Button */}
-      <TouchableOpacity style={styles.analyzeButton} onPress={analyzeSentiment}>
-        <Text style={styles.buttonText}>Analyze Mood</Text>
-      </TouchableOpacity>
+      <ScrollView contentContainerStyle={styles.content}>
+        <Text style={styles.header}>Mental Health Check-in</Text>
+        <TextInput
+          style={styles.input}
+          placeholder="How are you feeling today?"
+          onChangeText={setInputText}
+          value={inputText}
+          multiline
+        />
 
-      {result !== "" && <Text style={styles.result}>{result}</Text>}
+        {/* Custom Analyze Mood Button */}
+        <TouchableOpacity style={styles.analyzeButton} onPress={analyzeSentiment}>
+          <Text style={styles.buttonText}>Analyze Mood</Text>
+        </TouchableOpacity>
 
-      <Text style={styles.historyHeader}>Mood History</Text>
-      {moodHistory.map((item) => (
-        <View key={item.id} style={styles.historyItem}>
-          <Text>{item.text}</Text>
-          <Text style={{ fontWeight: "bold" }}>{item.mood}</Text>
-          <Text style={styles.timestamp}>
-            {item.timestamp ? format(item.timestamp.toDate(), "PPpp") : "No Date"}
-          </Text>
-        </View>
-      ))}
-    </ScrollView>
+        {result !== "" && <Text style={styles.result}>{result}</Text>}
+
+        <Text style={styles.historyHeader}>Mood History</Text>
+        {moodHistory.map((item) => (
+          <View key={item.id} style={styles.historyItem}>
+            <Text>{item.text}</Text>
+            <Text style={{ fontWeight: "bold" }}>{item.mood}</Text>
+            <Text style={styles.timestamp}>
+              {item.timestamp ? format(item.timestamp.toDate(), "PPpp") : "No Date"}
+            </Text>
+            
+            {/* Delete Button */}
+            <TouchableOpacity style={styles.deleteButton} onPress={() => deleteJournalEntry(item.id)}>
+                                    <Text style={styles.deleteButtonText}>🗑</Text>
+                                  </TouchableOpacity>
+          </View>
+        ))}
+      </ScrollView>
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: { 
-    flex: 1, 
-    padding: 20, 
-    backgroundColor: "#546C75",  // Updated background color
+    position: 'absolute', 
+    backgroundColor: "#546C75",
+    width: 850,
+    height: 850, // Keeps a base background color
+  },
+  content: {
+    padding: 20,
   },
   header: { 
     fontSize: 22, 
     fontWeight: "bold", 
     marginBottom: 10, 
-    color: "#fff",  // Optional: For contrast against the background
+    color: "#fff",  
   },
   input: {
     height: 100,
@@ -109,22 +138,23 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     marginBottom: 10,
     textAlignVertical: "top",
-    backgroundColor: "#fff",  // For input box to stand out
+    backgroundColor: "#fff",
+    marginRight: 450,
   },
   result: { 
     fontSize: 18, 
     marginTop: 10, 
     fontWeight: "bold",
-    color: "#fff",  // Optional: For better readability on dark background
+    color: "#fff",  
   },
   historyHeader: { 
     fontSize: 20, 
     marginTop: 20, 
     fontWeight: "bold", 
-    color: "#fff",  // Optional: For contrast against the background
+    color: "#fff",  
   },
   historyItem: {
-    backgroundColor: "#A7D8DE",  // Updated box color
+    backgroundColor: "#A7D8DE",  
     padding: 10,
     marginVertical: 5,
     borderRadius: 5,
@@ -134,22 +164,35 @@ const styles = StyleSheet.create({
     color: "gray", 
     marginTop: 5 
   },
-  // Custom button style
   analyzeButton: {
-    backgroundColor: "#A7D8DE", // Button background color
-    paddingVertical: 8, // Reduced vertical padding for a smaller button
-    paddingHorizontal: 20, // Adjust horizontal padding as needed
-    borderRadius: 3, // Rounded corners
+    backgroundColor: "#A7D8DE",
+    paddingVertical: 20,
+    paddingHorizontal: 50,
+    borderRadius: 3,
     alignItems: "center",
-    justifyContent: "center", // Centers the button content
+    justifyContent: "center",
     marginBottom: 10,
-    alignSelf: "center", // Centers the button horizontally
+    alignSelf: "center",
+    marginRight: 450,
   },
   buttonText: {
     fontSize: 18,
-    color: "#000", // Text color
+    color: "#000",
     fontWeight: "bold",
   },
+  deleteButton: { 
+    backgroundColor: "#FFFFFF", 
+    padding: 10, 
+    borderRadius: 10,
+    width: 40, 
+    height: 40, 
+    justifyContent: "center",
+    alignItems: "center",
+    left:300,
+    bottom:40,
+  },
+
+  
 });
 
 export default MoodTracking;

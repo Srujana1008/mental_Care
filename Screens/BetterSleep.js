@@ -28,8 +28,8 @@ const BetterSleep = ({ navigation }) => {
 
         <OptionButton 
           title="SleepMusic" 
-          icon={<MaterialIcons name="music-note" size={24} color="white" />} 
-          color="#FA6E5A" 
+          icon={<MaterialIcons name="music-note" size={24} color="black" />} 
+          color="#A7D8DE" 
           onPress={() => navigation.navigate('SleepMusic')}
         />
 
@@ -98,7 +98,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
   },
   buttonText: { 
-    color: '#fff', 
+    color: 'black', 
     fontSize: 18, 
     fontWeight: 'bold', 
     flex: 1,

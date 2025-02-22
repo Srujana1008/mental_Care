@@ -1,36 +1,59 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { Audio } from 'expo-av';
 
 const sounds = [
-  { name: 'Rain', file: require('../assets/sounds/rain.mp3'), color: '#4CA1AF' },
-  { name: 'Wind', file: require('../assets/sounds/wind.mp3'), color: '#5A69F9' },
-  { name: 'Night', file: require('../assets/sounds/night.mp3'), color: '#3CC77D' },
-  { name: 'White Noise', file: require('../assets/sounds/white_noise.mp3'), color: '#FA6E5A' }
+  { name: 'Rain', file: require('../assets/sounds/rain.mp3'), color: '#A7D8DE' },
+  { name: 'Wind', file: require('../assets/sounds/wind.mp3'), color: '#A7D8DE' },
+  { name: 'Night', file: require('../assets/sounds/night.mp3'), color: '#A7D8DE' },
+  { name: 'White Noise', file: require('../assets/sounds/white_noise.mp3'), color: '#A7D8DE' }
 ];
 
 const SleepMusic = () => {
   const [playingSound, setPlayingSound] = useState(null);
-  const [currentPlaying, setCurrentPlaying] = useState(null); // Track which sound is playing
+  const [currentPlaying, setCurrentPlaying] = useState(null);
+
+  useEffect(() => {
+    const requestPermissions = async () => {
+      await Audio.requestPermissionsAsync();
+      await Audio.setAudioModeAsync({
+        allowsRecordingIOS: false,
+        staysActiveInBackground: true,
+        playsInSilentModeIOS: true,
+        shouldDuckAndroid: true,
+        playThroughEarpieceAndroid: false
+      });
+    };
+    requestPermissions();
+  }, []);
 
   const toggleSound = async (soundFile, index) => {
-    if (playingSound) {
-      const status = await playingSound.getStatusAsync();
-      
-      if (status.isPlaying && currentPlaying === index) {
-        await playingSound.pauseAsync(); // Pause if already playing
-        setCurrentPlaying(null);
-        return;
-      } else {
+    try {
+      if (playingSound) {
         await playingSound.stopAsync();
         await playingSound.unloadAsync();
+        setPlayingSound(null);
       }
-    }
 
-    const { sound } = await Audio.Sound.createAsync(soundFile);
-    setPlayingSound(sound);
-    setCurrentPlaying(index);
-    await sound.playAsync();
+      if (currentPlaying === index) {
+        setCurrentPlaying(null);
+        return;
+      }
+
+      const { sound } = await Audio.Sound.createAsync(soundFile, { shouldPlay: true });
+      setPlayingSound(sound);
+      setCurrentPlaying(index);
+
+      sound.setOnPlaybackStatusUpdate(async (status) => {
+        if (status.didJustFinish) {
+          await sound.unloadAsync();
+          setPlayingSound(null);
+          setCurrentPlaying(null);
+        }
+      });
+    } catch (error) {
+      console.log("Error playing sound:", error);
+    }
   };
 
   return (
@@ -59,7 +82,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center', 
     alignItems: 'center', 
     padding: 20,
-    backgroundColor: '#546C75', // Updated background color
+    backgroundColor: '#546C75',
   },
   title: { 
     fontSize: 24, 
@@ -84,7 +107,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center'
   },
   buttonText: { 
-    color: 'white', 
+    color: 'black', 
     fontSize: 18, 
     fontWeight: 'bold',
   }

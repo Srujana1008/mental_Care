@@ -36,7 +36,7 @@ export default function BreathingExerciseScreen() {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>🌬 Breathing Exercise</Text>
+      <Text style={styles.title}>Breathing Exercise</Text>
 
       {/* Lottie Animation */}
       <LottieView

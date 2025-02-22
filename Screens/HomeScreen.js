@@ -1,16 +1,16 @@
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, SafeAreaView, Dimensions } from 'react-native';
+import { FontAwesome5, MaterialIcons, Ionicons } from '@expo/vector-icons';
 import LottieView from 'lottie-react-native';
-
 
 const { width, height } = Dimensions.get('window');
 
 const topics = [
-  { name: "Anxiety", color: ['#D38312', '#A83279'], screen: "Anxiety" },
-  { name: "Depression", color: ['#1E3C72', '#2A5298'], screen: "Depression" },
-  { name: "Time Management", color: ['#4CA1AF', '#C4E0E5'], screen: "TimeManagement" },
-  { name: "Mental Health Test", color: ['#D76D77', '#FFAF7B'], screen: "MentalHealthTest" },
-  { name: "Better Sleep", color: ['#2E8B57', '#66CDAA'], screen: "BetterSleep" } 
+  { name: "Anxiety", icon: <FontAwesome5 name="heartbeat" size={24} color="black" />, color: '#A7D8DE', screen: "Anxiety" },
+  { name: "Depression", icon: <MaterialIcons name="mood-bad" size={24} color="#black" />, color: '#A7D8DE', screen: "Depression" },
+  { name: "Time Management", icon: <Ionicons name="time" size={24} color="black" />, color: '#A7D8DE', screen: "TimeManagement" },
+  { name: "Mental Health Test", icon: <FontAwesome5 name="clipboard-list" size={24} color="black" />, color: '#A7D8DE', screen: "MentalHealthTest" },
+  { name: "Better Sleep", icon: <MaterialIcons name="bedtime" size={24} color="black" />, color: '#A7D8DE', screen: "BetterSleep" } 
 ];
 
 const HomeScreen = ({ navigation }) => {
@@ -24,22 +24,33 @@ const HomeScreen = ({ navigation }) => {
         style={styles.backgroundAnimation}
       />
 
-      {/* Content on top of animation */}
+      {/* Content Overlay */}
       <View style={styles.overlay}>
         <Text style={styles.title}>Find Support for Your Journey</Text>
         <View style={styles.listContainer}>
           {topics.map((item, index) => (
-            <TouchableOpacity 
+            <OptionButton 
               key={index} 
-              style={[styles.button, { backgroundColor: item.color[0] }]}
+              title={item.name} 
+              icon={item.icon} 
+              color={item.color} 
               onPress={() => navigation.navigate(item.screen)}
-            >
-              <Text style={styles.buttonText}>{item.name}</Text>
-            </TouchableOpacity>
+            />
           ))}
         </View>
       </View>
     </SafeAreaView>
+  );
+};
+
+// Reusable Button Component
+const OptionButton = ({ title, icon, color, onPress }) => {
+  return (
+    <TouchableOpacity style={[styles.button, { backgroundColor: color }]} onPress={onPress}>
+      <View style={styles.iconContainer}>{icon}</View>
+      <Text style={styles.buttonText}>{title}</Text>
+      <View style={styles.line} />
+    </TouchableOpacity>
   );
 };
 
@@ -57,31 +68,49 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+    padding: 20,
   },
   title: { 
     fontSize: 24, 
     fontWeight: 'bold', 
-    textAlign: 'center', 
     color: 'white',
-    marginBottom: 20
+    textAlign: 'center',
+    marginBottom: 20,
   },
   listContainer: {
     width: '100%',
     alignItems: 'center'
   },
-  button: {
-    width: '90%',
-    height: 100,
-    borderRadius: 20,
-    justifyContent: 'center',
+  button: { 
+    flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: 15,
-    elevation: 5,
+    padding: 15, 
+    marginVertical: 10, 
+    borderRadius: 15, 
+    width: '90%', 
+    position: 'relative',
+    overflow: 'hidden',
   },
-  buttonText: {
-    fontSize: 18,
-    color: 'white',
-    fontWeight: 'bold'
+  iconContainer: { 
+    marginRight: 15, 
+    backgroundColor: 'rgba(255,255,255,0.2)', 
+    padding: 8, 
+    borderRadius: 10 
+  },
+  buttonText: { 
+    color: 'black', 
+    fontSize: 18, 
+    fontWeight: 'bold', 
+    flex: 1 
+  },
+  line: {
+    position: 'absolute',
+    right: 10,
+    top: 5,
+    bottom: 5,
+    width: 20,
+    backgroundColor: 'rgba(255,255,255,0.3)',
+    borderRadius: 10,
   }
 });
 

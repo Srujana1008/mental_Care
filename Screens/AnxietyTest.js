@@ -1,27 +1,15 @@
-import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, ScrollView } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View, Text, TouchableOpacity, Dimensions } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { LineChart } from 'react-native-chart-kit';
 
 const questions = [
-  "I worry about things",
-  "I anticipate the worst",
-  "I cannot control my fears",
-  "I am irritable",
-  "I feel tense",
-  "I get startled easily",
-  "I break into tears without apparent reason",
-  "I get tired quickly",
-  "I am unable to relax",
-  "I have racing thoughts",
-  "My sleep is disturbed",
-  "I do not wake up feeling rested",
-  "I find it difficult to concentrate on tasks",
-  "I can’t remember things",
-  "I am fidgety",
-  "My hands tremble",
-  "I experience sudden chest pains or rapid heartbeat",
-  "I feel like I cannot breathe or am breathing too fast",
-  "My mouth goes dry",
-  "I avoid certain places, activities, or situations"
+  "I worry about things", "I anticipate the worst", "I cannot control my fears", "I am irritable",
+  "I feel tense", "I get startled easily", "I break into tears without apparent reason", "I get tired quickly",
+  "I am unable to relax", "I have racing thoughts", "My sleep is disturbed", "I do not wake up feeling rested",
+  "I find it difficult to concentrate on tasks", "I can’t remember things", "I am fidgety", "My hands tremble",
+  "I experience sudden chest pains or rapid heartbeat", "I feel like I cannot breathe or am breathing too fast",
+  "My mouth goes dry", "I avoid certain places, activities, or situations"
 ];
 
 const options = ["Never", "Rarely", "Sometimes", "Often", "Always"];
@@ -31,7 +19,21 @@ const AnxietyTest = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [result, setResult] = useState(null);
   const [previousScores, setPreviousScores] = useState([]);
-  const [showPreviousScores, setShowPreviousScores] = useState(false);
+
+  // Load previous scores from AsyncStorage
+  useEffect(() => {
+    const loadPreviousScores = async () => {
+      try {
+        const storedData = await AsyncStorage.getItem('anxietyScores');
+        if (storedData) {
+          setPreviousScores(JSON.parse(storedData));
+        }
+      } catch (error) {
+        console.error("Failed to load previous scores", error);
+      }
+    };
+    loadPreviousScores();
+  }, [result]);
 
   const handleSelect = (value) => {
     const newResponses = [...responses];
@@ -39,14 +41,36 @@ const AnxietyTest = () => {
     setResponses(newResponses);
   };
 
-  const calculateResult = () => {
+  const calculateResult = async () => {
     const score = responses.reduce((sum, response) => sum + (response !== null ? options.indexOf(response) : 0), 0);
     let level = "Mild Anxiety";
     if (score > 40) level = "Severe Anxiety";
     else if (score > 25) level = "Moderate Anxiety";
 
-    setPreviousScores([...previousScores, { score, level }]);
-    setResult({ level, score });
+    const newEntry = { score, level, date: new Date().toLocaleDateString() };
+
+    try {
+      const storedData = await AsyncStorage.getItem('anxietyScores');
+      const pastScores = storedData ? JSON.parse(storedData) : [];
+      const updatedScores = [...pastScores, newEntry];
+
+      await AsyncStorage.setItem('anxietyScores', JSON.stringify(updatedScores));
+
+      setPreviousScores(updatedScores);
+      setResult({ level, score });
+    } catch (error) {
+      console.error("Failed to save data", error);
+    }
+  };
+
+  // Clear history function
+  const clearHistory = async () => {
+    try {
+      await AsyncStorage.removeItem('anxietyScores');
+      setPreviousScores([]);
+    } catch (error) {
+      console.error("Failed to clear history", error);
+    }
   };
 
   return (
@@ -131,37 +155,42 @@ const AnxietyTest = () => {
         <View style={{ marginTop: 20, alignItems: 'center' }}>
           <Text style={{ fontSize: 18, fontWeight: 'bold', color: '#F5F5F5' }}>Your Anxiety Level:</Text>
           <Text style={{ fontSize: 22, fontWeight: 'bold', color: '#A7D8DE' }}>{result.level}</Text>
-          <Text style={{ fontSize: 16, color: '#F5F5F5', marginTop: 5 }}>Score: {result.score}</Text>
+          <Text style={{ fontSize: 16, color: '#F5F5F5', marginTop: 5 }}>Score: {result.score} / 80</Text>
 
+          {/* Graph with Numbered X-Axis */}
+          {previousScores.length > 1 && (
+            <LineChart
+              data={{
+                labels: previousScores.map((_, index) => (index + 1).toString()), // X-axis as 1, 2, 3, ...
+                datasets: [{ data: previousScores.map(entry => entry.score) }],
+              }}
+              width={Dimensions.get('window').width * 0.9}
+              height={220}
+              chartConfig={{
+                backgroundGradientFrom: '#A7D8DE',
+                backgroundGradientTo: '#546C75',
+                color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
+                labelColor: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
+              }}
+              bezier
+              style={{ marginTop: 20, borderRadius: 10 }}
+            />
+          )}
+
+          {/* Clear History Button */}
           <TouchableOpacity
             style={{
-              backgroundColor: '#A7D8DE',
+              backgroundColor: '#FF6B6B',
               padding: 10,
               borderRadius: 8,
               marginTop: 20,
-              width: 180,
+              width: 150,
               alignItems: 'center',
             }}
-            onPress={() => setShowPreviousScores(!showPreviousScores)}
+            onPress={clearHistory}
           >
-            <Text style={{ color: '#000', fontSize: 16 }}>
-              {showPreviousScores ? "Hide Previous Scores" : "View Previous Scores"}
-            </Text>
+            <Text style={{ color: '#fff', fontSize: 16, fontWeight: 'bold' }}>Clear History</Text>
           </TouchableOpacity>
-
-          {showPreviousScores && (
-            <ScrollView style={{ marginTop: 20, maxHeight: 150, width: '80%', backgroundColor: '#F5F5F5', padding: 10, borderRadius: 10 }}>
-              {previousScores.length === 0 ? (
-                <Text style={{ textAlign: 'center', color: '#000' }}>No previous scores available.</Text>
-              ) : (
-                previousScores.map((entry, index) => (
-                  <Text key={index} style={{ color: '#000', fontSize: 16, marginBottom: 5 }}>
-                    Attempt {index + 1}: {entry.level} (Score: {entry.score})
-                  </Text>
-                ))
-              )}
-            </ScrollView>
-          )}
         </View>
       )}
     </View>
