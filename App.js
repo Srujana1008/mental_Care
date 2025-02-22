@@ -72,9 +72,9 @@ function BottomTabs() {
 
           return <Ionicons name={iconName} size={size} color={color} />;
         },
-        tabBarActiveTintColor: '#007AFF',
-        tabBarInactiveTintColor: 'gray',
-        tabBarStyle: { backgroundColor: '#37474F', height: 70 },
+        tabBarActiveTintColor: 'black',
+        tabBarInactiveTintColor: '#ECEFF1',
+        tabBarStyle: { backgroundColor: '#78909C', height: 70 },
       })}
     >
       <Tab.Screen name="Home" component={HomeScreen} />
@@ -108,11 +108,19 @@ export default function App() {
 
           {/* Stack Navigator for Additional Screens */}
           <Stack.Navigator>
-            <Stack.Screen 
-              name="Main" 
-              component={BottomTabs} 
-              options={{ headerShown: false }} 
-            />
+  <Stack.Screen 
+    name="Main" 
+    component={BottomTabs} 
+    options={{
+      headerShown: true,
+      headerStyle: {
+        backgroundColor: '#78909C', // Set header background color
+      },
+      headerTintColor: '#78909C', // Set header text color
+    }} 
+  />
+  {/* Other screens */}
+
             <Stack.Screen name="Anxiety" component={Anxiety} />
             <Stack.Screen name="AnxietyTips" component={AnxietyTips} />
             <Stack.Screen name="Food" component={FoodScreen} />
