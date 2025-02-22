@@ -11,6 +11,7 @@ const MoodTracking = () => {
   const [inputText, setInputText] = useState("");
   const [result, setResult] = useState("");
   const [moodHistory, setMoodHistory] = useState([]);
+  const [deleteMessage, setDeleteMessage] = useState("");
 
   useEffect(() => {
     fetchMoodHistory();
@@ -62,6 +63,8 @@ const MoodTracking = () => {
     try {
       await deleteDoc(doc(db, "moodHistory", id));
       fetchMoodHistory(); // Refresh mood history after deletion
+      setDeleteMessage("Mood successfully deleted!"); // Set the success message
+      setTimeout(() => setDeleteMessage(""), 3000); // Reset the message after 3 seconds
     } catch (error) {
       console.error("❌ Error deleting mood:", error);
     }
@@ -104,9 +107,9 @@ const MoodTracking = () => {
             </Text>
             
             {/* Delete Button */}
-            <TouchableOpacity style={styles.deleteButton} onPress={() => deleteJournalEntry(item.id)}>
-                                    <Text style={styles.deleteButtonText}>🗑</Text>
-                                  </TouchableOpacity>
+            <TouchableOpacity style={styles.deleteButton} onPress={() => deleteMood(item.id)}>
+  <Text style={styles.deleteButtonText}>🗑</Text>
+</TouchableOpacity>
           </View>
         ))}
       </ScrollView>
@@ -191,6 +194,14 @@ const styles = StyleSheet.create({
     left:300,
     bottom:40,
   },
+  deleteMessage: {
+    fontSize: 16,
+    color: "green",
+    fontWeight: "bold",
+    marginTop: 10,
+    textAlign: "center",
+  },
+  
 
   
 });

@@ -74,7 +74,7 @@ function BottomTabs() {
         },
         tabBarActiveTintColor: '#007AFF',
         tabBarInactiveTintColor: 'gray',
-        tabBarStyle: { backgroundColor: '#fff', height: 70 },
+        tabBarStyle: { backgroundColor: '#37474F', height: 70 },
       })}
     >
       <Tab.Screen name="Home" component={HomeScreen} />
